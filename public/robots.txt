@@ -1,5 +1,5 @@
 # Robots.txt for Personal Blog Site
-# https://your-domain.com/robots.txt
+# https://salcastoro.com/robots.txt
 
 # Allow all web crawlers
 User-agent: *
@@ -39,7 +39,7 @@ Allow: /
 # Crawl-delay: 1
 
 # Sitemap location
-Sitemap: https://your-domain.com/sitemap.xml
+Sitemap: https://salcastoro.com/sitemap.xml
 
 # Additional sitemap for RSS feed
-Sitemap: https://your-domain.com/rss.xml
+Sitemap: https://salcastoro.com/rss.xml

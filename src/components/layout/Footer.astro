@@ -21,10 +21,7 @@ const socialLinks = [
 
 const footerLinks = [
   { href: '/about', label: 'About' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/uses', label: 'Uses' },
-  { href: '/rss.xml', label: 'RSS Feed' },
-  { href: '/sitemap.xml', label: 'Sitemap' }
+  { href: '/blog', label: 'Blog' }
 ];
 ---
 
@@ -94,22 +91,6 @@ const footerLinks = [
             </a>
           ))}
         </div>
-        
-        <!-- Newsletter signup (optional) -->
-        <div class="pt-2">
-          <p class="text-xs text-[var(--color-text-muted)] mb-2">
-            Get updates on new posts
-          </p>
-          <a 
-            href="/newsletter"
-            class="btn btn--sm btn--secondary inline-flex items-center gap-2"
-          >
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-            Newsletter
-          </a>
-        </div>
       </div>
     </div>
     
@@ -119,23 +100,9 @@ const footerLinks = [
         <p>
           &copy; {currentYear} Sal Castoro. All rights reserved.
         </p>
-        <div class="flex gap-4">
-          <a 
-            href="/privacy" 
-            class="hover:text-[var(--color-text-secondary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-2 rounded-sm"
-          >
-            Privacy
-          </a>
-          <a 
-            href="/terms" 
-            class="hover:text-[var(--color-text-secondary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-2 rounded-sm"
-          >
-            Terms
-          </a>
-          <span class="text-[var(--color-text-muted)]">
-            Built with <a href="https://astro.build" class="hover:text-[var(--color-accent-primary)] transition-colors" target="_blank" rel="noopener noreferrer">Astro</a>
-          </span>
-        </div>
+        <span class="text-[var(--color-text-muted)]">
+          Built with <a href="https://astro.build" class="hover:text-[var(--color-accent-primary)] transition-colors" target="_blank" rel="noopener noreferrer">Astro</a>
+        </span>
       </div>
     </div>
   </div>

@@ -6,7 +6,7 @@ export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => {
     return data.draft !== true; // Exclude drafts in production
   });
-  
+
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: { post },
