@@ -1,0 +1,45 @@
+# Robots.txt for Personal Blog Site
+# https://your-domain.com/robots.txt
+
+# Allow all web crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas (if they exist in the future)
+Disallow: /admin/
+Disallow: /private/
+Disallow: /_astro/
+
+# Allow important resources for SEO
+Allow: /favicon.ico
+Allow: /sitemap.xml
+Allow: /rss.xml
+
+# Special rules for different crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Social media crawlers
+User-agent: facebookexternalhit/
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Crawl delay for courtesy (optional)
+# Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://your-domain.com/sitemap.xml
+
+# Additional sitemap for RSS feed
+Sitemap: https://your-domain.com/rss.xml

@@ -1,0 +1,140 @@
+---
+import {
+  SITE_CONFIG,
+  generatePageTitle,
+  generateCanonicalURL,
+  generateImageURL,
+  generateRobotsContent,
+  generateWebsiteSchema,
+  generatePersonSchema,
+  generateBlogPostSchema,
+  type SEOProps,
+} from '@/utils/seo';
+
+export interface Props extends SEOProps {}
+
+const {
+  title,
+  description = SITE_CONFIG.description,
+  image = SITE_CONFIG.defaultImage,
+  imageAlt = `${SITE_CONFIG.name} - ${SITE_CONFIG.description}`,
+  canonicalURL = Astro.url.pathname,
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+  author = SITE_CONFIG.author.name,
+  tags = [],
+  noindex = false,
+  nofollow = false,
+} = Astro.props;
+
+const fullTitle = generatePageTitle(title);
+const canonicalURLString = generateCanonicalURL(canonicalURL, Astro.site?.toString() || SITE_CONFIG.url);
+const imageURL = generateImageURL(image, Astro.site?.toString() || SITE_CONFIG.url);
+const robotsContent = generateRobotsContent(noindex, nofollow);
+
+// Generate structured data based on content type
+let structuredData;
+if (type === 'article' && publishedTime) {
+  structuredData = generateBlogPostSchema(
+    canonicalURLString,
+    title,
+    description,
+    publishedTime,
+    modifiedTime,
+    image,
+    author,
+    tags
+  );
+} else {
+  structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      generateWebsiteSchema(Astro.site?.toString() || SITE_CONFIG.url),
+      generatePersonSchema(Astro.site?.toString() || SITE_CONFIG.url),
+    ],
+  };
+}
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="color-scheme" content="light dark" />
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <!-- SEO -->
+    <link rel="canonical" href={canonicalURLString} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="robots" content={robotsContent} />
+    <meta name="author" content={author} />
+    <meta name="language" content={SITE_CONFIG.language} />
+    {tags.length > 0 && <meta name="keywords" content={tags.join(', ')} />}
+    
+    <!-- Primary Meta Tags -->
+    <title>{fullTitle}</title>
+    <meta name="title" content={fullTitle} />
+    <meta name="description" content={description} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonicalURLString} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageURL} />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content={SITE_CONFIG.name} />
+    <meta property="og:locale" content={SITE_CONFIG.locale} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+    <meta property="article:author" content={author} />
+    {tags.map(tag => <meta property="article:tag" content={tag} />)}
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content={SITE_CONFIG.author.twitter} />
+    <meta name="twitter:creator" content={SITE_CONFIG.author.twitter} />
+    <meta name="twitter:url" content={canonicalURLString} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageURL} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+    
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title={`${SITE_CONFIG.name} RSS Feed`} href="/rss.xml" />
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Theme -->
+    <script is:inline>
+      const theme = localStorage.getItem('theme') || 'system';
+      if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+@import '../styles/global.css';
+</style>

@@ -1,0 +1,54 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BlogLayout from '@/layouts/BlogLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => {
+    return data.draft !== true; // Exclude drafts in production
+  });
+  
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+export interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+// Extract frontmatter data
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  author,
+  tags,
+  heroImage,
+  heroImageAlt,
+  draft
+} = post.data;
+
+// Don't render draft posts in production
+if (draft && import.meta.env.PROD) {
+  return Astro.redirect('/blog');
+}
+---
+
+<BlogLayout
+  title={title}
+  description={description}
+  pubDate={pubDate}
+  updatedDate={updatedDate}
+  author={author}
+  tags={tags}
+  heroImage={heroImage}
+  heroImageAlt={heroImageAlt}
+  draft={draft}
+>
+  <Content />
+</BlogLayout>

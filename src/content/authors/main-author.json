@@ -1,0 +1,29 @@
+{
+  "name": "Sal Castoro",
+  "bio": "Full-stack developer passionate about web technologies, performance, and creating inclusive digital experiences.",
+  "longBio": "Experienced full-stack developer with expertise in modern web technologies including TypeScript, React, and Node.js. Passionate about web performance, accessibility, and developer experience. Enjoys exploring new technologies and sharing knowledge with the community.",
+  "avatar": "/images/profile-400.jpg",
+  "email": "hello@salcastoro.com",
+  "website": "https://salcastoro.com",
+  "social": {
+    "twitter": "s_castoro",
+    "github": "scastoro",
+    "linkedin": "sal-castoro-3b1050178"
+  },
+  "title": "Senior Frontend Developer",
+  "company": "Independent",
+  "location": "United States",
+  "expertise": [
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Node.js",
+    "Web Performance",
+    "Accessibility",
+    "Astro"
+  ],
+  "languages": ["en"],
+  "showInAuthorsList": true,
+  "featured": true,
+  "joinDate": "2024-01-01"
+}

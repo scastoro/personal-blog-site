@@ -1,0 +1,190 @@
+---
+export interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+  loading?: 'lazy' | 'eager';
+  quality?: number;
+  format?: 'webp' | 'avif' | 'jpeg' | 'png';
+  sizes?: string;
+}
+
+const { 
+  src, 
+  alt, 
+  caption, 
+  width, 
+  height,
+  loading = 'lazy',
+  quality = 80,
+  format = 'webp',
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px'
+} = Astro.props;
+
+// For now, we'll use the original image path
+// In a real implementation, you'd want to use Astro's image optimization
+const optimizedSrc = src;
+---
+
+<figure class="my-8 mx-auto">
+  <div class="relative overflow-hidden rounded-lg shadow-lg bg-gray-100 dark:bg-gray-800">
+    <!-- Loading placeholder -->
+    <div class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse" id="image-placeholder"></div>
+    
+    <img 
+      src={optimizedSrc}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={loading}
+      decoding="async"
+      sizes={sizes}
+      class="relative z-10 w-full h-auto transition-opacity duration-300 opacity-0"
+      onload="this.style.opacity='1'; document.getElementById('image-placeholder')?.remove();"
+      onerror="this.style.opacity='1'; this.src='/images/placeholder-error.png';"
+    />
+    
+    <!-- Zoom overlay for larger images -->
+    {(width && width > 600) && (
+      <button 
+        type="button"
+        class="absolute top-2 right-2 bg-black bg-opacity-50 text-white rounded-full p-2 opacity-0 transition-opacity duration-200 hover:opacity-100 focus:opacity-100 zoom-button"
+        title="Click to zoom"
+        aria-label="Zoom image"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+        </svg>
+      </button>
+    )}
+  </div>
+  
+  {caption && (
+    <figcaption class="mt-4 text-sm text-gray-600 dark:text-gray-400 text-center italic">
+      {caption}
+    </figcaption>
+  )}
+</figure>
+
+<!-- Image zoom modal -->
+{(width && width > 600) && (
+  <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden items-center justify-center p-4">
+    <div class="relative max-w-full max-h-full">
+      <img 
+        src={optimizedSrc}
+        alt={alt}
+        class="max-w-full max-h-full object-contain"
+        id="modal-image"
+      />
+      <button 
+        type="button"
+        class="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
+        onclick="document.getElementById('image-modal')?.classList.add('hidden')"
+        aria-label="Close modal"
+      >
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+)}
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Handle zoom functionality
+    const zoomButtons = document.querySelectorAll('.zoom-button');
+    const modal = document.getElementById('image-modal');
+    
+    zoomButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const img = button.previousElementSibling as HTMLImageElement;
+        const modalImg = document.getElementById('modal-image') as HTMLImageElement;
+        
+        if (img && modalImg && modal) {
+          modalImg.src = img.src;
+          modalImg.alt = img.alt;
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        }
+      });
+    });
+    
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    });
+    
+    // Close modal on backdrop click
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    });
+    
+    // Show zoom button on hover for larger images
+    const figures = document.querySelectorAll('figure');
+    figures.forEach(figure => {
+      const zoomButton = figure.querySelector('.zoom-button');
+      if (zoomButton) {
+        figure.addEventListener('mouseenter', () => {
+          zoomButton.classList.remove('opacity-0');
+        });
+        figure.addEventListener('mouseleave', () => {
+          zoomButton.classList.add('opacity-0');
+        });
+      }
+    });
+  });
+</script>
+
+<style>
+  /* Smooth loading animation */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  figure img {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  /* Responsive image sizing */
+  @media (max-width: 640px) {
+    figure {
+      margin-left: -1rem;
+      margin-right: -1rem;
+    }
+    
+    figure > div {
+      border-radius: 0;
+    }
+  }
+  
+  /* Loading shimmer effect */
+  @keyframes shimmer {
+    0% {
+      background-position: -200px 0;
+    }
+    100% {
+      background-position: calc(200px + 100%) 0;
+    }
+  }
+  
+  #image-placeholder {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200px 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  
+  .dark #image-placeholder {
+    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+    background-size: 200px 100%;
+  }
+</style>

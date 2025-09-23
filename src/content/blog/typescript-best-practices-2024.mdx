@@ -1,0 +1,403 @@
+---
+title: "TypeScript Best Practices for 2024: Writing Better, Safer Code"
+description: "Learn the essential TypeScript best practices that will make your code more maintainable, type-safe, and developer-friendly in 2024."
+pubDate: 2024-02-10T00:00:00.000Z
+author: "Sal Castoro"
+tags: ["typescript", "javascript", "best-practices", "code-quality"]
+category: "Programming"
+featured: false
+draft: false
+difficulty: "intermediate"
+estimatedReadingTime: 12
+---
+
+import Callout from '@/components/mdx/Callout.astro';
+import CodeBlock from '@/components/mdx/CodeBlock.astro';
+import Quote from '@/components/mdx/Quote.astro';
+
+TypeScript has evolved significantly since its introduction, and 2024 brings even more powerful features and established patterns. Whether you're new to TypeScript or looking to level up your skills, these best practices will help you write more robust and maintainable code.
+
+## 1. Embrace Strict Mode Configuration
+
+The foundation of good TypeScript starts with proper configuration. Always enable strict mode and additional checks:
+
+<CodeBlock language="json" filename="tsconfig.json" title="Recommended TypeScript Configuration">
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false
+  }
+}
+```
+</CodeBlock>
+
+<Callout type="tip" title="Why Strict Mode Matters">
+Strict mode catches common errors at compile time rather than runtime, leading to fewer bugs and more predictable code behavior.
+</Callout>
+
+## 2. Prefer Type Inference Over Explicit Types
+
+Let TypeScript do the heavy lifting. Explicit types are often unnecessary and can make code harder to maintain:
+
+<CodeBlock language="typescript" title="Type Inference Examples">
+```typescript
+// ❌ Unnecessary explicit types
+const count: number = 42;
+const message: string = "Hello, World!";
+const isActive: boolean = true;
+
+// ✅ Let TypeScript infer
+const count = 42;
+const message = "Hello, World!";
+const isActive = true;
+
+// ✅ Explicit types when inference isn't clear
+const users: User[] = []; // Empty array needs type
+const callback: (id: string) => Promise<User> = fetchUser;
+```
+</CodeBlock>
+
+## 3. Use Union Types and Type Guards
+
+Union types provide flexibility while maintaining type safety:
+
+<CodeBlock language="typescript" title="Union Types and Type Guards">
+```typescript
+type Status = 'idle' | 'loading' | 'success' | 'error';
+
+interface ApiResponse<T> {
+  status: Status;
+  data?: T;
+  error?: string;
+}
+
+// Type guard function
+function isSuccessResponse<T>(response: ApiResponse<T>): response is ApiResponse<T> & { status: 'success'; data: T } {
+  return response.status === 'success' && response.data !== undefined;
+}
+
+// Usage with type narrowing
+function handleResponse<T>(response: ApiResponse<T>) {
+  if (isSuccessResponse(response)) {
+    // TypeScript knows data exists and error doesn't
+    console.log(response.data.someProperty);
+  } else if (response.status === 'error') {
+    // TypeScript knows error might exist
+    console.error(response.error ?? 'Unknown error');
+  }
+}
+```
+</CodeBlock>
+
+## 4. Leverage Template Literal Types
+
+Template literal types enable powerful string manipulation at the type level:
+
+<CodeBlock language="typescript" title="Template Literal Types">
+```typescript
+// Dynamic API endpoint types
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type ApiVersion = 'v1' | 'v2';
+type Endpoint = 'users' | 'posts' | 'comments';
+
+type ApiUrl = `/api/${ApiVersion}/${Endpoint}`;
+// Result: "/api/v1/users" | "/api/v1/posts" | ... etc
+
+// CSS custom properties
+type CSSCustomProperty = `--${string}`;
+
+interface Theme {
+  [key: CSSCustomProperty]: string;
+}
+
+const theme: Theme = {
+  '--primary-color': '#007bff',
+  '--secondary-color': '#6c757d',
+  // '--invalid': 'red', // ❌ TypeScript error: doesn't start with --
+};
+```
+</CodeBlock>
+
+## 5. Master Utility Types
+
+TypeScript's built-in utility types are incredibly powerful for type transformations:
+
+<CodeBlock language="typescript" title="Utility Types in Action">
+```typescript
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  isActive: boolean;
+}
+
+// Create types from existing ones
+type PublicUser = Omit<User, 'password'>; // All props except password
+type UserUpdate = Partial<Pick<User, 'name' | 'email'>>; // Optional name and email
+type UserCreation = Omit<User, 'id'>; // All props except id
+
+// Advanced utility type combinations
+type NonNullable<T> = T extends null | undefined ? never : T;
+type RequiredUser = Required<User>; // All properties required
+type ReadonlyUser = Readonly<User>; // All properties readonly
+
+// Custom utility types
+type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
+};
+```
+</CodeBlock>
+
+<Quote author="Anders Hejlsberg" source="TypeScript Creator" variant="large">
+The goal of TypeScript is to be a better JavaScript for application-scale development.
+</Quote>
+
+## 6. Implement Branded Types for Type Safety
+
+Branded types prevent mixing up similar primitive types:
+
+<CodeBlock language="typescript" title="Branded Types">
+```typescript
+// Brand primitive types
+type UserId = string & { readonly brand: unique symbol };
+type ProductId = string & { readonly brand: unique symbol };
+type Email = string & { readonly brand: unique symbol };
+
+// Factory functions for type safety
+function createUserId(id: string): UserId {
+  if (!id || id.length < 3) {
+    throw new Error('Invalid user ID');
+  }
+  return id as UserId;
+}
+
+function createEmail(email: string): Email {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    throw new Error('Invalid email format');
+  }
+  return email as Email;
+}
+
+// Usage prevents mixing up similar types
+function getUserById(userId: UserId): Promise<User> {
+  // Implementation
+}
+
+const userId = createUserId('user_123');
+const productId = 'product_456' as ProductId;
+
+getUserById(userId); // ✅ Correct
+// getUserById(productId); // ❌ TypeScript error: wrong type
+```
+</CodeBlock>
+
+## 7. Use Discriminated Unions for Complex State
+
+Discriminated unions make state management more predictable:
+
+<CodeBlock language="typescript" title="Discriminated Unions">
+```typescript
+// State management with discriminated unions
+type LoadingState = {
+  kind: 'loading';
+  progress?: number;
+};
+
+type SuccessState = {
+  kind: 'success';
+  data: User[];
+  lastUpdated: Date;
+};
+
+type ErrorState = {
+  kind: 'error';
+  error: string;
+  retryCount: number;
+};
+
+type AsyncState = LoadingState | SuccessState | ErrorState;
+
+// Type-safe state handling
+function renderUserList(state: AsyncState) {
+  switch (state.kind) {
+    case 'loading':
+      return `Loading... ${state.progress ?? 0}%`;
+    
+    case 'success':
+      return `Found ${state.data.length} users (updated: ${state.lastUpdated})`;
+    
+    case 'error':
+      return `Error: ${state.error} (attempts: ${state.retryCount})`;
+    
+    default:
+      // TypeScript ensures exhaustive checking
+      const _exhaustive: never = state;
+      return _exhaustive;
+  }
+}
+```
+</CodeBlock>
+
+## 8. Create Composable and Reusable Types
+
+Build a library of reusable types for your domain:
+
+<CodeBlock language="typescript" title="Composable Types">
+```typescript
+// Base entity type
+interface Entity {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Timestamped mixin
+type WithTimestamps<T> = T & {
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+// Soft delete mixin
+type WithSoftDelete<T> = T & {
+  deletedAt?: Date;
+  isDeleted: boolean;
+};
+
+// Auditable mixin
+type WithAudit<T> = T & {
+  createdBy: string;
+  updatedBy: string;
+};
+
+// Compose types
+type User = WithTimestamps<WithSoftDelete<WithAudit<{
+  name: string;
+  email: string;
+}>>>;
+
+// Generic API response wrapper
+type ApiResponse<T> = {
+  success: boolean;
+  data?: T;
+  error?: string;
+  metadata?: {
+    page?: number;
+    limit?: number;
+    total?: number;
+  };
+};
+```
+</CodeBlock>
+
+## 9. Handle Async Code with Proper Types
+
+Type async operations correctly to prevent common pitfalls:
+
+<CodeBlock language="typescript" title="Async Type Safety">
+```typescript
+// Generic async result type
+type Result<T, E = Error> = {
+  success: true;
+  data: T;
+} | {
+  success: false;
+  error: E;
+};
+
+// Async function with proper error handling
+async function fetchUserSafely(id: string): Promise<Result<User, string>> {
+  try {
+    const response = await fetch(`/api/users/${id}`);
+    if (!response.ok) {
+      return { success: false, error: `HTTP ${response.status}` };
+    }
+    
+    const user = await response.json() as User;
+    return { success: true, data: user };
+  } catch (error) {
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    };
+  }
+}
+
+// Type-safe async/await usage
+async function handleUser() {
+  const result = await fetchUserSafely('123');
+  
+  if (result.success) {
+    // TypeScript knows result.data exists
+    console.log(result.data.name);
+  } else {
+    // TypeScript knows result.error exists
+    console.error(result.error);
+  }
+}
+```
+</CodeBlock>
+
+## 10. Performance and Bundle Optimization
+
+Keep your TypeScript performant and your bundles lean:
+
+<Callout type="warning" title="Performance Tips">
+- Use `import type` for type-only imports to avoid runtime dependencies
+- Prefer interfaces over types for object shapes (better performance)
+- Use const assertions to narrow types without runtime overhead
+</Callout>
+
+<CodeBlock language="typescript" title="Optimization Examples">
+```typescript
+// Type-only imports (removed at compile time)
+import type { User } from './types';
+import type { ComponentProps } from 'react';
+
+// Runtime import only when needed
+import { validateEmail } from './utils';
+
+// Const assertions for precise types
+const themes = ['light', 'dark', 'auto'] as const;
+type Theme = typeof themes[number]; // 'light' | 'dark' | 'auto'
+
+// Interface over type for better performance
+interface UserConfig {
+  theme: Theme;
+  language: string;
+  notifications: boolean;
+}
+
+// Type alias for computed types
+type UserConfigKeys = keyof UserConfig;
+```
+</CodeBlock>
+
+## Conclusion
+
+TypeScript continues to evolve, but these fundamental practices remain essential for writing maintainable, type-safe code. By following these patterns, you'll:
+
+- Catch more errors at compile time
+- Improve code documentation through types
+- Enable better IDE support and refactoring
+- Build more robust applications
+
+The key is to start with strict configuration, embrace TypeScript's inference capabilities, and gradually adopt advanced patterns as your codebase grows.
+
+<Callout type="success" title="Next Steps">
+Practice these patterns in a small project, set up strict TypeScript configuration in your next project, and consider adopting a consistent style guide across your team.
+</Callout>
+
+Remember: TypeScript is a tool to make JavaScript development more enjoyable and productive. Don't fight the type system—work with it, and it will reward you with better code and fewer bugs.
+
+---
+
+*What TypeScript patterns have you found most helpful in your projects? Share your experiences and tips in the comments!*

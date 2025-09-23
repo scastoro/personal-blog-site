@@ -1,0 +1,139 @@
+{
+  "$ref": "#/definitions/authors",
+  "definitions": {
+    "authors": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "bio": {
+          "type": "string",
+          "maxLength": 160,
+          "errorMessage": {
+            "maxLength": "Bio should be under 160 characters for SEO"
+          }
+        },
+        "longBio": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "website": {
+          "type": "string",
+          "format": "uri"
+        },
+        "social": {
+          "type": "object",
+          "properties": {
+            "twitter": {
+              "type": "string"
+            },
+            "github": {
+              "type": "string"
+            },
+            "linkedin": {
+              "type": "string"
+            },
+            "instagram": {
+              "type": "string"
+            },
+            "youtube": {
+              "type": "string"
+            },
+            "mastodon": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "title": {
+          "type": "string"
+        },
+        "company": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "expertise": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "languages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "en"
+          ]
+        },
+        "showInAuthorsList": {
+          "type": "boolean",
+          "default": true
+        },
+        "featured": {
+          "type": "boolean",
+          "default": false
+        },
+        "joinDate": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "integer",
+                  "format": "unix-time"
+                }
+              ]
+            }
+          ]
+        },
+        "lastActive": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "bio"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
