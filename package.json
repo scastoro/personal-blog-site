@@ -26,7 +26,6 @@
   "homepage": "https://github.com/scastoro/personal-blog-site#readme",
   "dependencies": {
     "@astrojs/mdx": "^4.3.5",
-    "@astrojs/rss": "^4.0.9",
     "@astrojs/sitemap": "^3.5.1",
     "@astrojs/tailwind": "^6.0.2",
     "astro": "^5.13.7"
