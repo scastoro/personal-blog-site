@@ -54,7 +54,7 @@ src/
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 22+ (v22.12.0 recommended, specified in `.nvmrc`)
 - npm or yarn
 
 ### Installation
@@ -156,12 +156,45 @@ The site is optimized for performance with:
 
 ## 🌐 Deployment
 
-This site can be deployed to any static hosting service:
+This site is deployed on **Cloudflare Pages** with automatic deployments from the main branch.
 
+### Production Deployment
+- **Live Site**: https://salcastoro.com
+- **Platform**: Cloudflare Pages
+- **Build Command**: `npm run build`
+- **Output Directory**: `dist`
+- **Node.js Version**: v22.12.0 (specified in `.nvmrc`)
+
+### Deployment Features
+- ✅ **Automatic deployments** from GitHub main branch
+- ✅ **Preview deployments** for pull requests
+- ✅ **Global CDN** with 200+ edge locations
+- ✅ **Free SSL certificate** and HTTPS
+- ✅ **Fast builds** (typically under 2 minutes)
+- ✅ **Built-in analytics** (privacy-focused)
+
+### Manual Deployment Steps
+
+1. **Connect Repository to Cloudflare Pages**
+   - Go to [Cloudflare Pages Dashboard](https://dash.cloudflare.com/pages)
+   - Click "Create a project" → "Connect to Git"
+   - Select this repository: `scastoro/personal-blog-site`
+
+2. **Configure Build Settings**
+   - Framework preset: **Astro**
+   - Build command: `npm run build`
+   - Build output directory: `dist`
+   - Root directory: `/`
+
+3. **Add Custom Domain**
+   - Go to Custom domains tab
+   - Add `salcastoro.com`
+   - Configure DNS as directed
+
+### Alternative Hosting Options
 - **Netlify**: Connect your Git repository
 - **Vercel**: Import your project
-- **GitHub Pages**: Use GitHub Actions
-- **Cloudflare Pages**: Connect your repository
+- **GitHub Pages**: Use GitHub Actions workflow
 
 ## 📄 License
 

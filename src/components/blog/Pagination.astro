@@ -117,7 +117,7 @@ const nextPageUrl = currentPage < totalPages ? getPageUrl(currentPage + 1) : nul
           {showNumbers && pageRange.map((page, index) => {
             if (page === '...') {
               return (
-                <span key={`dots-${index}`} class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300">
+                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300">
                   ...
                 </span>
               );
@@ -127,16 +127,14 @@ const nextPageUrl = currentPage < totalPages ? getPageUrl(currentPage + 1) : nul
             const isCurrentPage = pageNum === currentPage;
             
             return isCurrentPage ? (
-              <span 
-                key={pageNum}
+              <span
                 class="relative inline-flex items-center px-4 py-2 border border-blue-500 bg-blue-50 dark:bg-blue-900 text-sm font-medium text-blue-600 dark:text-blue-400 z-10"
                 aria-current="page"
               >
                 {pageNum}
               </span>
             ) : (
-              <a 
-                key={pageNum}
+              <a
                 href={getPageUrl(pageNum)}
                 class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                 aria-label={`Go to page ${pageNum}`}

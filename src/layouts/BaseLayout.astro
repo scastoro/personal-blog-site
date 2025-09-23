@@ -14,7 +14,7 @@ import {
 export interface Props extends SEOProps {}
 
 const {
-  title,
+  title = SITE_CONFIG.name,
   description = SITE_CONFIG.description,
   image = SITE_CONFIG.defaultImage,
   imageAlt = `${SITE_CONFIG.name} - ${SITE_CONFIG.description}`,
