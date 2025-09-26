@@ -9,11 +9,11 @@ featured: false
 twitterCard: 'summary_large_image'
 ---
 
-# Claude Code Custom Subagents Advanced Strategies
-
 Claude Code custom subagents let you break down work into specialized helpers with their own instructions, tools, and context windows. Instead of stuffing everything into one giant prompt, you can define agents for specific roles and let them collaborate.
 
 This post starts with how to set them up, then dives into advanced features, orchestration patterns, and the pitfalls to avoid.
+
+If you prefer video content, I gave a talk at a local meetup covering these concepts: [**Claude Code Subagents: From Basics to Advanced Workflows**](https://www.youtube.com/watch?v=HI8PBSPr6Qk). The talk covers the foundational concepts and then explores the advanced strategies detailed in this post.
 
 ---
 
