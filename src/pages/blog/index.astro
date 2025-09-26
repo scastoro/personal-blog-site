@@ -34,34 +34,41 @@ const posts = allPosts.sort((a, b) =>
         <!-- Posts will be displayed here when they exist -->
         <div class="grid gap-8">
           {posts.map((post) => (
-            <article class="border border-[var(--color-border-default)] rounded-lg p-6 hover:shadow-lg transition-shadow">
-              <h2 class="text-2xl font-semibold mb-3">
-                <a href={`/blog/${post.slug}`} class="text-[var(--color-text-primary)] hover:text-[var(--color-accent-primary)] transition-colors">
+            <a href={`/blog/${post.slug}`} class="group block">
+              <article class="border border-[var(--color-border-default)] rounded-lg p-6 hover:shadow-lg transition-all duration-200 cursor-pointer hover:border-[var(--color-accent-primary)]">
+                <h2 class="text-2xl font-semibold mb-3 text-[var(--color-text-primary)] group-hover:text-[var(--color-accent-primary)] transition-colors">
                   {post.data.title}
-                </a>
-              </h2>
-              <p class="text-[var(--color-text-secondary)] mb-4">
-                {post.data.description}
-              </p>
-              <div class="flex items-center gap-4 text-sm text-[var(--color-text-muted)]">
-                <time datetime={post.data.pubDate.toISOString()}>
-                  {post.data.pubDate.toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </time>
-                {post.data.tags.length > 0 && (
-                  <div class="flex gap-2">
-                    {post.data.tags.slice(0, 3).map(tag => (
-                      <span class="px-2 py-1 rounded-full bg-[var(--color-bg-muted)] text-xs">
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </article>
+                </h2>
+                <p class="text-[var(--color-text-secondary)] mb-4">
+                  {post.data.description}
+                </p>
+                <div class="flex items-center justify-between text-sm text-[var(--color-text-muted)]">
+                  <time datetime={post.data.pubDate.toISOString()}>
+                    {post.data.pubDate.toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </time>
+                  {post.data.tags.length > 0 && (
+                    <div class="flex gap-2">
+                      {post.data.tags.slice(0, 3).map(tag => (
+                        <span class="px-2 py-1 rounded-full bg-[var(--color-bg-muted)] text-xs">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <!-- Read more indicator -->
+                <div class="mt-4 flex items-center text-[var(--color-accent-primary)] group-hover:text-[var(--color-accent-secondary)] font-medium transition-colors">
+                  <span>Read more</span>
+                  <svg class="ml-1 w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </div>
+              </article>
+            </a>
           ))}
         </div>
       ) : (
