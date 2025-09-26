@@ -22,7 +22,6 @@ interface Experience {
 const skills: Skill[] = [
   // Frontend
   { name: 'React', level: 'Expert', category: 'Frontend' },
-  { name: 'Vue.js', level: 'Advanced', category: 'Frontend' },
   { name: 'TypeScript', level: 'Advanced', category: 'Frontend' },
   { name: 'Astro', level: 'Advanced', category: 'Frontend' },
   { name: 'Tailwind CSS', level: 'Expert', category: 'Frontend' },
@@ -33,7 +32,6 @@ const skills: Skill[] = [
   { name: 'Python', level: 'Advanced', category: 'Backend' },
   { name: 'PostgreSQL', level: 'Advanced', category: 'Backend' },
   { name: 'MongoDB', level: 'Intermediate', category: 'Backend' },
-  { name: 'GraphQL', level: 'Intermediate', category: 'Backend' },
   
   // Tools
   { name: 'Git', level: 'Expert', category: 'Tools' },
@@ -44,43 +42,39 @@ const skills: Skill[] = [
 
 const experiences: Experience[] = [
   {
-    title: 'Senior Frontend Developer',
-    company: 'Tech Company',
-    period: '2022 - Present',
-    location: 'Remote',
+    title: 'Application Engineer',
+    company: 'Great American Insurance Group',
+    period: 'April 2023 - Present',
+    location: '',
     description: [
-      'Led development of modern web applications using React and TypeScript',
-      'Mentored junior developers and established code review processes',
-      'Improved application performance by 40% through optimization techniques',
-      'Collaborated with design team to implement pixel-perfect UI components'
+      'Led modernization of flagship commercial insurance quoting platform, migrating from legacy systems to React and Node.js/Express, resulting in 30% faster page load times and ~20% reduction in quoting errors reported by brokers',
+      'Designed and launched a new multi-coverage insurance product from backend schema to frontend UI, contributing to a 12% increase in broker-submitted quotes in its first quarter',
+      'Built robust data synchronization pipelines between modern web platform and legacy ERP systems using microservices architecture; resolved schema and nullability mismatches, reducing manual data correction needs by 80%',
+      'Delivered technical presentations to 50+ engineers during company meetings on Redux architecture, agentic coding tools, and AI-assisted workflows',
+      'Acted as point of contact for onboarding and mentorship, helping ramp up junior devs and collaborating on complex front-end/back-end challenges'
     ],
-    technologies: ['React', 'TypeScript', 'Next.js', 'Tailwind CSS', 'Node.js']
+    technologies: ['React', 'TypeScript', 'Node.js', 'Express', 'Redux', 'PostgreSQL', 'AWS', 'Microservices']
   },
   {
-    title: 'Full Stack Developer',
-    company: 'Digital Agency',
-    period: '2020 - 2022',
-    location: 'San Francisco, CA',
+    title: 'Software Developer',
+    company: 'PS Solutions',
+    period: 'May 2022 - March 2023',
+    location: '',
     description: [
-      'Developed and maintained client websites using various technologies',
-      'Built custom CMS solutions and e-commerce platforms',
-      'Worked closely with clients to understand requirements and deliver solutions',
-      'Implemented responsive designs and ensured cross-browser compatibility'
+      'Built PTO request and tracking system in React and Node.js/Express deployed via AWS',
+      'Integrated RingCentral calling functionality into client CRM using TypeScript and microservices architecture'
     ],
-    technologies: ['Vue.js', 'Laravel', 'MySQL', 'SCSS', 'WordPress']
+    technologies: ['React', 'Node.js', 'Express', 'AWS', 'TypeScript', 'RingCentral API', 'Microservices']
   },
   {
-    title: 'Frontend Developer',
-    company: 'Startup Inc.',
-    period: '2018 - 2020',
-    location: 'New York, NY',
+    title: 'IT Analyst',
+    company: 'Clima Cube Self Storage',
+    period: 'Jan 2020 - Apr 2022',
+    location: '',
     description: [
-      'Contributed to the development of a SaaS platform from ground up',
-      'Implemented user interface components using React and Redux',
-      'Participated in agile development processes and sprint planning',
-      'Collaborated with UX designers to improve user experience'
+      'Developed a custom price tracking tool with React and Next.js using TypeScript that increased observability into competitor pricing allowing for frequent rate adjustment'
     ],
-    technologies: ['React', 'Redux', 'JavaScript', 'CSS3', 'REST APIs']
+    technologies: ['React', 'Next.js', 'TypeScript', 'CSS', 'AWS']
   }
 ];
 
@@ -88,9 +82,9 @@ const experiences: Experience[] = [
 const skillCategories = ['Frontend', 'Backend', 'Tools', 'Design'] as const;
 ---
 
-<PageLayout 
-  title="About Me" 
-  description="Learn more about my background, skills, and professional experience as a web developer."
+<PageLayout
+  title="About Me"
+  description="Learn more about my background, skills, and professional experience as a software engineer."
 >
   <!-- Hero Section -->
   <section class="py-16 lg:py-20">
@@ -122,20 +116,19 @@ const skillCategories = ['Frontend', 'Backend', 'Tools', 'Design'] as const;
         <div class="lg:col-span-2">
           <div class="max-w-3xl">
             <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 text-balance">
-              Hi, I'm Sal Castoro
+              Hi, I'm Sal 
             </h1>
             <div class="space-y-6">
               <p class="text-xl lg:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed">
-                I'm a passionate web developer with over 5 years of experience creating amazing digital experiences. 
+                I'm a passionate software engineer with over 5 years of experience creating amazing digital experiences. 
                 I love turning complex problems into simple, beautiful solutions.
               </p>
               <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                Currently, I specialize in modern frontend technologies like React, TypeScript, and Astro, 
-                while also working with backend systems and cloud infrastructure. I'm always excited to learn 
-                new technologies and tackle challenging projects.
+                Currently, I work with modern frontend technologies like React and Astro, 
+                while also designing backend systems with Node.js and Python on cloud infrastructure such as AWS. I'm always excited to learn new technologies and tackle challenging projects.
               </p>
               <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                When I'm not coding, you can find me exploring new technologies, contributing to open source projects, 
+                When I'm not coding, you can find me exploring new technologies, playing tabletop RPGs, 
                 or sharing my knowledge through blog posts and community involvement.
               </p>
             </div>
