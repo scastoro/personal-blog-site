@@ -9,10 +9,9 @@ interface Props {
       tags: string[];
     };
   };
-  featured?: boolean;
 }
 
-const { post, featured = false } = Astro.props;
+const { post } = Astro.props;
 const { title, description, pubDate, tags } = post.data;
 
 // Format date for display

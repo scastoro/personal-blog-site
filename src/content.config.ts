@@ -55,49 +55,6 @@ const blogCollection = defineCollection({
   }),
 });
 
-const authorsCollection = defineCollection({
-  loader: glob({ pattern: '**/*.json', base: './src/content/authors' }),
-  schema: z.object({
-    // Basic author information
-    name: z.string(),
-    bio: z.string().max(160, 'Bio should be under 160 characters for SEO'),
-    longBio: z.string().optional(), // Longer biography for author pages
-    
-    // Visual identity
-    avatar: z.string().optional(),
-    
-    // Contact and social media
-    email: z.email().optional(),
-    website: z.url().optional(),
-    social: z.object({
-      twitter: z.string().optional(), // Handle without @
-      github: z.string().optional(),
-      linkedin: z.string().optional(), // LinkedIn profile slug
-      instagram: z.string().optional(),
-      youtube: z.string().optional(),
-      mastodon: z.string().optional(),
-    }).optional(),
-    
-    // Professional information
-    title: z.string().optional(), // Job title
-    company: z.string().optional(),
-    location: z.string().optional(),
-    
-    // SEO and structured data
-    expertise: z.array(z.string()).default([]), // Areas of expertise
-    languages: z.array(z.string()).default(['en']), // Languages spoken
-    
-    // Author page settings
-    showInAuthorsList: z.boolean().default(true),
-    featured: z.boolean().default(false),
-    
-    // Metadata
-    joinDate: z.string().or(z.date()).optional(),
-    lastActive: z.coerce.date().optional(),
-  }),
-});
-
 export const collections = {
   blog: blogCollection,
-  authors: authorsCollection,
 };

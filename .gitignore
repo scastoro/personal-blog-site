@@ -1,5 +1,24 @@
-node_modules
-dist
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# generated types and dev state (recreated by `astro sync` / `astro dev`)
+.astro/
+
+# Cloudflare tooling
+.wrangler/
+.cloudflare/
+.dev.vars*
+
+# environment
 .env
-.env.local
-.wrangler
+.env.*
+
+# OS / editor
+.DS_Store
+
+# local tool state
+.playwright-mcp/
+.claude/settings.local.json
