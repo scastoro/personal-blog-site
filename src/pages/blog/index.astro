@@ -31,10 +31,9 @@ const posts = allPosts.sort((a, b) =>
     <!-- Blog Content -->
     <div class="max-w-4xl mx-auto">
       {posts.length > 0 ? (
-        <!-- Posts will be displayed here when they exist -->
         <div class="grid gap-8">
           {posts.map((post) => (
-            <a href={`/blog/${post.slug}`} class="group block">
+            <a href={`/blog/${post.id}`} class="group block">
               <article class="border border-[var(--color-border-default)] rounded-lg p-6 hover:shadow-lg transition-all duration-200 cursor-pointer hover:border-[var(--color-accent-primary)]">
                 <h2 class="text-2xl font-semibold mb-3 text-[var(--color-text-primary)] group-hover:text-[var(--color-accent-primary)] transition-colors">
                   {post.data.title}
@@ -72,7 +71,6 @@ const posts = allPosts.sort((a, b) =>
           ))}
         </div>
       ) : (
-        <!-- Empty state -->
         <div class="text-center py-16">
           <div class="max-w-md mx-auto">
             <div class="w-24 h-24 mx-auto mb-6 flex items-center justify-center rounded-full bg-[var(--color-bg-muted)]">
@@ -88,7 +86,7 @@ const posts = allPosts.sort((a, b) =>
             </p>
             <a
               href="/"
-              class="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-accent-primary)] text-white rounded-lg hover:bg-[var(--color-accent-secondary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-border-focus)]"
+              class="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-accent-primary)] text-white rounded-lg hover:bg-[var(--color-accent-secondary)] transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[var(--color-border-focus)]"
             >
               <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />

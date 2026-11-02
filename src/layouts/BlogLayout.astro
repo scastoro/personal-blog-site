@@ -67,7 +67,7 @@ const readingTime = Math.ceil((wordCount / 150) + (imageCount * 0.5)); // 150 WP
   noindex={draft}
 >
   <!-- Add breadcrumb structured data -->
-  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   
   <Header />
   
@@ -237,6 +237,7 @@ const readingTime = Math.ceil((wordCount / 150) + (imageCount * 0.5)); // 150 WP
 </BaseLayout>
 
 <style is:global>
+  @reference '../styles/global.css';
   /* Enhance prose styles for better readability */
   .prose {
     --tw-prose-body: theme('colors.gray.700');

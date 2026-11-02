@@ -19,9 +19,9 @@ This is a performance-first personal blog site built using Astro's partial hydra
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Astro 5.13+
-- **Styling**: Tailwind CSS 3.4+
-- **Content**: MDX with @astrojs/mdx
+- **Framework**: Astro 7.4+
+- **Styling**: Tailwind CSS 4.3+ with the Vite plugin and existing design-token configuration
+- **Content**: Markdown/MDX with glob-loaded content collections and the Unified Markdown processor
 - **TypeScript**: Strict mode enabled
 - **Fonts**: Inter + JetBrains Mono
 - **Icons**: Heroicons (SVG)
@@ -37,8 +37,8 @@ src/
 │   └── mdx/             # Custom MDX components
 ├── content/
 │   ├── blog/            # Blog posts (MDX)
-│   ├── authors/         # Author information
-│   └── config.ts        # Content collections schema
+│   └── authors/         # Author information
+├── content.config.ts    # Content collection loaders and schemas
 ├── layouts/
 │   ├── BaseLayout.astro # Base HTML template
 │   └── PageLayout.astro # Page wrapper with header/footer
@@ -54,14 +54,18 @@ src/
 
 ### Prerequisites
 
-- Node.js 22+ (v22.12.0 recommended, specified in `.nvmrc`)
-- npm or yarn
+- Node.js 24 (v24.22.1 specified in `.nvmrc`)
+- npm (use the committed `package-lock.json` for reproducible installs)
 
 ### Installation
 
 ```bash
+# Select the project runtime
+nvm install
+nvm use
+
 # Install dependencies
-npm install
+npm ci
 
 # Start development server
 npm run dev
@@ -87,7 +91,7 @@ npm run sync         # Sync content collections
 
 ### Creating Blog Posts
 
-Create new blog posts in `src/content/blog/` using MDX format:
+Create new blog posts in `src/content/blog/` using Markdown (`.md`) or MDX (`.mdx`). The filename becomes the post ID and URL; preserve filenames when updating existing posts.
 
 ```mdx
 ---
@@ -121,6 +125,10 @@ Add author information in `src/content/authors/` as JSON files:
 ### Theme Colors
 
 Edit `tailwind.config.mjs` to customize the color scheme and design tokens.
+The config is loaded explicitly from `src/styles/global.css`; dark variants follow the `.dark` class used by the theme toggle. Component styles using Tailwind directives reference the global stylesheet with `@reference`.
+Tailwind 4 targets modern browsers: Safari 16.4+, Chromium 111+, and Firefox 128+.
+
+The typography plugin currently pins an older selector parser. A scoped npm override selects the patched, same-major `postcss-selector-parser` 6.1.5; reassess it when upgrading the plugin. TypeScript stays on 5.9.x for compatibility with the Astro checker.
 
 ### Typography
 
@@ -142,7 +150,7 @@ export default defineConfig({
 - `astro.config.mjs` - Astro configuration and integrations
 - `tailwind.config.mjs` - Tailwind CSS configuration
 - `tsconfig.json` - TypeScript configuration with path aliases
-- `src/content/config.ts` - Content collections schema
+- `src/content.config.ts` - Content collection loaders and schemas
 
 ## 📈 Performance
 
@@ -163,7 +171,7 @@ This site is deployed on **Cloudflare Pages** with automatic deployments from th
 - **Platform**: Cloudflare Pages
 - **Build Command**: `npm run build`
 - **Output Directory**: `dist`
-- **Node.js Version**: v22.12.0 (specified in `.nvmrc`)
+- **Node.js Version**: v24.22.1 (specified in `.nvmrc`; keep any Cloudflare `NODE_VERSION` override aligned when changing runtimes)
 
 ### Deployment Features
 - ✅ **Automatic deployments** from GitHub main branch

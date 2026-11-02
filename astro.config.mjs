@@ -1,16 +1,17 @@
 import { defineConfig, passthroughImageService } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from '@tailwindcss/vite';
+import { unified } from '@astrojs/markdown-remark';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://salcastoro.com',
+  compressHTML: true,
   image: {
     service: passthroughImageService(),
   },
   integrations: [
-    tailwind(),
     mdx(),
     sitemap({
       // Customize sitemap generation
@@ -53,12 +54,14 @@ export default defineConfig({
     }),
   ],
   markdown: {
+    processor: unified(),
     shikiConfig: {
       theme: 'github-dark-dimmed',
       wrap: true,
     },
   },
   vite: {
+    plugins: [tailwindcss()],
     optimizeDeps: {
       exclude: ['@resvg/resvg-js'],
     },

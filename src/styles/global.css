@@ -1,10 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@config '../../tailwind.config.mjs';
+@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
-  /* Import fonts */
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+  *, ::before, ::after, ::backdrop, ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
 
   /* Design Tokens - CSS Custom Properties */
   :root {
@@ -236,7 +237,7 @@
 
 @layer components {
   /* Button Components */
-  .btn {
+  .btn, .theme-toggle {
     /* Reset */
     border: none;
     background: none;
@@ -262,12 +263,12 @@
     transition: all var(--duration-fast) var(--ease-out);
   }
 
-  .btn:focus-visible {
+  .btn:focus-visible, .theme-toggle:focus-visible {
     outline: 2px solid var(--color-border-focus);
     outline-offset: 2px;
   }
 
-  .btn:disabled {
+  .btn:disabled, .theme-toggle:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     pointer-events: none;
@@ -299,12 +300,12 @@
     border-color: var(--color-border-strong);
   }
 
-  .btn--ghost {
+  .btn--ghost, .theme-toggle {
     background-color: transparent;
     color: var(--color-text-secondary);
   }
 
-  .btn--ghost:hover:not(:disabled) {
+  .btn--ghost:hover:not(:disabled), .theme-toggle:hover:not(:disabled) {
     background-color: var(--color-bg-muted);
     color: var(--color-text-primary);
   }
@@ -323,7 +324,7 @@
   }
 
   /* Card Components */
-  .card {
+  .card, .post-card {
     background-color: var(--color-bg-elevated);
     border: 1px solid var(--color-border-default);
     border-radius: var(--radius-lg);
@@ -333,20 +334,20 @@
     overflow: hidden;
   }
 
-  .card:hover {
+  .card:hover, .post-card:hover {
     box-shadow: var(--shadow-card-hover);
     transform: translateY(-2px);
   }
 
-  .card--interactive {
+  .card--interactive, .post-card {
     cursor: pointer;
   }
 
-  .card--interactive:hover {
+  .card--interactive:hover, .post-card:hover {
     border-color: var(--color-border-strong);
   }
 
-  .card--interactive:focus-visible {
+  .card--interactive:focus-visible, .post-card:focus-visible {
     outline: 2px solid var(--color-border-focus);
     outline-offset: 2px;
   }
@@ -368,8 +369,6 @@
 
   /* Blog Post Card */
   .post-card {
-    @apply card card--interactive;
-    
     .post-card__meta {
       color: var(--color-text-muted);
       font-size: var(--text-sm);
@@ -419,7 +418,7 @@
   }
 
   /* Form Components */
-  .form-input {
+  .form-input, .form-textarea {
     width: 100%;
     padding: var(--space-3) var(--space-4);
     background-color: var(--color-bg-elevated);
@@ -431,26 +430,25 @@
     transition: all var(--duration-fast) var(--ease-out);
   }
 
-  .form-input::placeholder {
+  .form-input::placeholder, .form-textarea::placeholder {
     color: var(--color-text-muted);
   }
 
-  .form-input:focus {
+  .form-input:focus, .form-textarea:focus {
     outline: none;
     border-color: var(--color-border-focus);
     box-shadow: 0 0 0 3px var(--color-blue-100);
   }
 
-  .dark .form-input:focus {
+  .dark .form-input:focus, .dark .form-textarea:focus {
     box-shadow: 0 0 0 3px var(--color-blue-900);
   }
 
-  .form-input:invalid {
+  .form-input:invalid, .form-textarea:invalid {
     border-color: var(--color-accent-danger);
   }
 
   .form-textarea {
-    @apply form-input;
     resize: vertical;
     min-height: 120px;
   }
@@ -500,34 +498,6 @@
     position: sticky;
     top: 0;
     z-index: 50;
-  }
-
-  /* Container Component */
-  .container {
-    width: 100%;
-    max-width: 1024px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: var(--space-4);
-    padding-right: var(--space-4);
-    
-    @media (min-width: 640px) {
-      padding-left: var(--space-6);
-      padding-right: var(--space-6);
-    }
-
-    @media (min-width: 1024px) {
-      padding-left: var(--space-8);
-      padding-right: var(--space-8);
-    }
-  }
-
-  .container--narrow {
-    max-width: 768px;
-  }
-
-  .container--wide {
-    max-width: 1280px;
   }
 
   /* Prose styles for blog content */
@@ -665,7 +635,6 @@
 
   /* Dark Mode Toggle */
   .theme-toggle {
-    @apply btn btn--ghost;
     width: var(--space-10);
     height: var(--space-10);
     padding: 0;
@@ -681,6 +650,35 @@
   .theme-toggle:hover svg {
     transform: rotate(180deg);
   }
+}
+
+@utility container {
+  width: 100%;
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+
+  @media (min-width: 640px) {
+    max-width: 1024px;
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 1024px;
+    padding-left: var(--space-8);
+    padding-right: var(--space-8);
+  }
+}
+
+@utility container--narrow {
+  max-width: 768px;
+}
+
+@utility container--wide {
+  max-width: 1280px;
 }
 
 @layer utilities {

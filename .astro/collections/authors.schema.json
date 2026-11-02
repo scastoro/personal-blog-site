@@ -1,139 +1,106 @@
 {
-  "$ref": "#/definitions/authors",
-  "definitions": {
-    "authors": {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "bio": {
+      "type": "string",
+      "maxLength": 160
+    },
+    "longBio": {
+      "type": "string"
+    },
+    "avatar": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+    },
+    "website": {
+      "type": "string",
+      "format": "uri"
+    },
+    "social": {
       "type": "object",
       "properties": {
-        "name": {
+        "twitter": {
           "type": "string"
         },
-        "bio": {
-          "type": "string",
-          "maxLength": 160,
-          "errorMessage": {
-            "maxLength": "Bio should be under 160 characters for SEO"
-          }
-        },
-        "longBio": {
+        "github": {
           "type": "string"
         },
-        "avatar": {
+        "linkedin": {
           "type": "string"
         },
-        "email": {
-          "type": "string",
-          "format": "email"
-        },
-        "website": {
-          "type": "string",
-          "format": "uri"
-        },
-        "social": {
-          "type": "object",
-          "properties": {
-            "twitter": {
-              "type": "string"
-            },
-            "github": {
-              "type": "string"
-            },
-            "linkedin": {
-              "type": "string"
-            },
-            "instagram": {
-              "type": "string"
-            },
-            "youtube": {
-              "type": "string"
-            },
-            "mastodon": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
-        },
-        "title": {
+        "instagram": {
           "type": "string"
         },
-        "company": {
+        "youtube": {
           "type": "string"
         },
-        "location": {
-          "type": "string"
-        },
-        "expertise": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": []
-        },
-        "languages": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [
-            "en"
-          ]
-        },
-        "showInAuthorsList": {
-          "type": "boolean",
-          "default": true
-        },
-        "featured": {
-          "type": "boolean",
-          "default": false
-        },
-        "joinDate": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                {
-                  "type": "string",
-                  "format": "date"
-                },
-                {
-                  "type": "integer",
-                  "format": "unix-time"
-                }
-              ]
-            }
-          ]
-        },
-        "lastActive": {
-          "anyOf": [
-            {
-              "type": "string",
-              "format": "date-time"
-            },
-            {
-              "type": "string",
-              "format": "date"
-            },
-            {
-              "type": "integer",
-              "format": "unix-time"
-            }
-          ]
-        },
-        "$schema": {
+        "mastodon": {
           "type": "string"
         }
-      },
-      "required": [
-        "name",
-        "bio"
+      }
+    },
+    "title": {
+      "type": "string"
+    },
+    "company": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "expertise": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "languages": {
+      "default": [
+        "en"
       ],
-      "additionalProperties": false
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "showInAuthorsList": {
+      "default": true,
+      "type": "boolean"
+    },
+    "featured": {
+      "default": false,
+      "type": "boolean"
+    },
+    "joinDate": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "string",
+          "format": "date-time"
+        }
+      ]
+    },
+    "lastActive": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "$schema": {
+      "type": "string"
     }
   },
-  "$schema": "http://json-schema.org/draft-07/schema#"
+  "required": [
+    "name",
+    "bio"
+  ]
 }

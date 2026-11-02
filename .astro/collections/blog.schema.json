@@ -1,156 +1,123 @@
 {
-  "$ref": "#/definitions/blog",
-  "definitions": {
-    "blog": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string",
-          "maxLength": 160,
-          "errorMessage": {
-            "maxLength": "Description should be under 160 characters for SEO"
-          }
-        },
-        "pubDate": {
-          "anyOf": [
-            {
-              "type": "string",
-              "format": "date-time"
-            },
-            {
-              "type": "string",
-              "format": "date"
-            },
-            {
-              "type": "integer",
-              "format": "unix-time"
-            }
-          ]
-        },
-        "updatedDate": {
-          "anyOf": [
-            {
-              "type": "string",
-              "format": "date-time"
-            },
-            {
-              "type": "string",
-              "format": "date"
-            },
-            {
-              "type": "integer",
-              "format": "unix-time"
-            }
-          ]
-        },
-        "author": {
-          "type": "string",
-          "default": "Sal Castoro"
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": []
-        },
-        "category": {
-          "type": "string"
-        },
-        "keywords": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": []
-        },
-        "draft": {
-          "type": "boolean",
-          "default": false
-        },
-        "featured": {
-          "type": "boolean",
-          "default": false
-        },
-        "heroImage": {
-          "type": "string"
-        },
-        "heroImageAlt": {
-          "type": "string"
-        },
-        "ogImage": {
-          "type": "string"
-        },
-        "ogImageAlt": {
-          "type": "string"
-        },
-        "metaTitle": {
-          "type": "string"
-        },
-        "canonicalURL": {
-          "type": "string",
-          "format": "uri"
-        },
-        "noindex": {
-          "type": "boolean",
-          "default": false
-        },
-        "nofollow": {
-          "type": "boolean",
-          "default": false
-        },
-        "readingTime": {
-          "type": "number"
-        },
-        "difficulty": {
-          "type": "string",
-          "enum": [
-            "beginner",
-            "intermediate",
-            "advanced"
-          ]
-        },
-        "twitterCard": {
-          "type": "string",
-          "enum": [
-            "summary",
-            "summary_large_image"
-          ],
-          "default": "summary_large_image"
-        },
-        "relatedPosts": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": []
-        },
-        "series": {
-          "type": "string"
-        },
-        "seriesOrder": {
-          "type": "number"
-        },
-        "estimatedReadingTime": {
-          "type": "number"
-        },
-        "wordCount": {
-          "type": "number"
-        },
-        "$schema": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "title",
-        "description",
-        "pubDate"
-      ],
-      "additionalProperties": false
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 160
+    },
+    "pubDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "author": {
+      "default": "Sal Castoro",
+      "type": "string"
+    },
+    "tags": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "category": {
+      "type": "string"
+    },
+    "keywords": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "draft": {
+      "default": false,
+      "type": "boolean"
+    },
+    "featured": {
+      "default": false,
+      "type": "boolean"
+    },
+    "heroImage": {
+      "type": "string"
+    },
+    "heroImageAlt": {
+      "type": "string"
+    },
+    "ogImage": {
+      "type": "string"
+    },
+    "ogImageAlt": {
+      "type": "string"
+    },
+    "metaTitle": {
+      "type": "string"
+    },
+    "canonicalURL": {
+      "type": "string",
+      "format": "uri"
+    },
+    "noindex": {
+      "default": false,
+      "type": "boolean"
+    },
+    "nofollow": {
+      "default": false,
+      "type": "boolean"
+    },
+    "readingTime": {
+      "type": "number"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ]
+    },
+    "twitterCard": {
+      "default": "summary_large_image",
+      "type": "string",
+      "enum": [
+        "summary",
+        "summary_large_image"
+      ]
+    },
+    "relatedPosts": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "series": {
+      "type": "string"
+    },
+    "seriesOrder": {
+      "type": "number"
+    },
+    "estimatedReadingTime": {
+      "type": "number"
+    },
+    "wordCount": {
+      "type": "number"
+    },
+    "$schema": {
+      "type": "string"
     }
   },
-  "$schema": "http://json-schema.org/draft-07/schema#"
+  "required": [
+    "title",
+    "description",
+    "pubDate"
+  ]
 }

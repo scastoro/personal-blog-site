@@ -1,15 +1,17 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
 const blogCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
   schema: z.object({
     // Basic content information
     title: z.string(),
     description: z.string().max(160, 'Description should be under 160 characters for SEO'),
     
     // Dates for SEO and display
-    pubDate: z.date(),
-    updatedDate: z.date().optional(),
+    pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
     
     // Author information
     author: z.string().default('Sal Castoro'),
@@ -31,7 +33,7 @@ const blogCollection = defineCollection({
     
     // SEO specific fields
     metaTitle: z.string().optional(), // Custom meta title (if different from title)
-    canonicalURL: z.string().url().optional(), // Custom canonical URL
+    canonicalURL: z.url().optional(), // Custom canonical URL
     noindex: z.boolean().default(false), // Prevent indexing
     nofollow: z.boolean().default(false), // Prevent following links
     
@@ -54,7 +56,7 @@ const blogCollection = defineCollection({
 });
 
 const authorsCollection = defineCollection({
-  type: 'data',
+  loader: glob({ pattern: '**/*.json', base: './src/content/authors' }),
   schema: z.object({
     // Basic author information
     name: z.string(),
@@ -65,8 +67,8 @@ const authorsCollection = defineCollection({
     avatar: z.string().optional(),
     
     // Contact and social media
-    email: z.string().email().optional(),
-    website: z.string().url().optional(),
+    email: z.email().optional(),
+    website: z.url().optional(),
     social: z.object({
       twitter: z.string().optional(), // Handle without @
       github: z.string().optional(),
@@ -91,7 +93,7 @@ const authorsCollection = defineCollection({
     
     // Metadata
     joinDate: z.string().or(z.date()).optional(),
-    lastActive: z.date().optional(),
+    lastActive: z.coerce.date().optional(),
   }),
 });
 
