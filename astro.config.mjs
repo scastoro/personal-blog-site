@@ -1,4 +1,4 @@
-import { defineConfig, passthroughImageService } from 'astro/config';
+import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import { unified } from '@astrojs/markdown-remark';
 import mdx from '@astrojs/mdx';
@@ -8,9 +8,6 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://salcastoro.com',
   compressHTML: true,
-  image: {
-    service: passthroughImageService(),
-  },
   integrations: [
     mdx(),
     sitemap({
