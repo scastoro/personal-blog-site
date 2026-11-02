@@ -12,6 +12,9 @@
     { "pattern": "salcastoro.com", "custom_domain": true }
   ],
   "workers_dev": true,
+  // Branch Previews from Workers Builds (`npx wrangler preview`) are served on workers.dev.
+  "preview_urls": true,
+  "previews": {},
   "observability": {
     "enabled": true
   }
