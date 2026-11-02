@@ -14,41 +14,23 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
-      // Customize sitemap generation
-      changefreq: 'weekly',
-      priority: 0.7,
       lastmod: new Date(),
-      // Filter out draft posts and admin pages
-      filter: (page) => {
-        // Exclude draft posts (they should have /draft/ in the URL when drafts are implemented)
-        if (page.includes('/draft/')) return false;
-        // Exclude admin or private pages
-        if (page.includes('/admin/')) return false;
-        if (page.includes('/private/')) return false;
-        // Include all other pages
-        return true;
-      },
-      // Customize entries for different page types
+      // Every route uses a trailing slash, so match on the exact pathname.
       serialize(item) {
-        // Higher priority for important pages
-        if (item.url.endsWith('/')) {
-          // Homepage
+        const path = new URL(item.url).pathname;
+        if (path === '/') {
           item.priority = 1.0;
           item.changefreq = 'weekly';
-        } else if (item.url.includes('/blog/') && !item.url.endsWith('/blog/')) {
-          // Individual blog posts
-          item.priority = 0.8;
-          item.changefreq = 'monthly';
-        } else if (item.url.includes('/blog/')) {
-          // Blog index page
+        } else if (path === '/blog/') {
           item.priority = 0.9;
           item.changefreq = 'weekly';
-        } else if (item.url.includes('/about/') || item.url.includes('/contact/') || item.url.includes('/uses/')) {
-          // Static pages
+        } else if (path.startsWith('/blog/')) {
+          item.priority = 0.8;
+          item.changefreq = 'monthly';
+        } else {
           item.priority = 0.6;
           item.changefreq = 'monthly';
         }
-        
         return item;
       },
     }),
@@ -62,8 +44,5 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
-    optimizeDeps: {
-      exclude: ['@resvg/resvg-js'],
-    },
   },
 });

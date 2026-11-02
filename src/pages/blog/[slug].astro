@@ -30,6 +30,8 @@ const {
   tags,
   heroImage,
   heroImageAlt,
+  ogImage,
+  ogImageAlt,
   draft
 } = post.data;
 
@@ -48,6 +50,8 @@ if (draft && import.meta.env.PROD) {
   tags={tags}
   heroImage={heroImage}
   heroImageAlt={heroImageAlt}
+  ogImage={ogImage}
+  ogImageAlt={ogImageAlt}
   draft={draft}
 >
   <Content />

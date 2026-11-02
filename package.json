@@ -1,42 +1,35 @@
 {
   "name": "personal-blog-site",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "description": "Sal Castoro's personal site and blog (salcastoro.com), built with Astro and served by Cloudflare Workers.",
+  "type": "module",
+  "engines": {
+    "node": ">=24.22.1 <25"
+  },
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "sync": "astro sync"
+    "sync": "astro sync",
+    "deploy": "npm run build && wrangler deploy"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/scastoro/personal-blog-site.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
-  "engines": {
-    "node": ">=24.22.1 <25"
-  },
+  "homepage": "https://salcastoro.com",
   "bugs": {
     "url": "https://github.com/scastoro/personal-blog-site/issues"
   },
-  "homepage": "https://github.com/scastoro/personal-blog-site#readme",
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.5",
     "@astrojs/mdx": "^8.1.2",
+    "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
     "astro": "^7.4.4"
-  },
-  "overrides": {
-    "@tailwindcss/typography": {
-      "postcss-selector-parser": "6.1.5"
-    }
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
@@ -46,5 +39,10 @@
     "tailwindcss": "^4.3.3",
     "typescript": "~5.9.3",
     "wrangler": "^4.156.1"
+  },
+  "overrides": {
+    "@tailwindcss/typography": {
+      "postcss-selector-parser": "6.1.5"
+    }
   }
 }

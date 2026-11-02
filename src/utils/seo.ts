@@ -4,6 +4,7 @@ export const SITE_CONFIG = {
   description: 'Sal Castoro is a software engineer in Austin, TX building full-stack web applications with React and TypeScript, and writing about AI coding tools and side projects.',
   url: 'https://salcastoro.com',
   defaultImage: '/og-image.jpg',
+  defaultImageAlt: 'Sal Castoro, software engineer in Austin, TX',
   author: {
     name: 'Sal Castoro',
     twitter: '@s_castoro',
@@ -110,14 +111,6 @@ export function generateWebsiteSchema(url: string) {
         SITE_CONFIG.social.linkedin,
       ].filter(Boolean),
     },
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${url}/search?q={search_term_string}`,
-      },
-      'query-input': 'required name=search_term_string',
-    },
   };
 }
 
@@ -132,10 +125,16 @@ export function generatePersonSchema(url: string) {
     name: SITE_CONFIG.author.name,
     url: url,
     email: SITE_CONFIG.author.email,
-    jobTitle: 'Web Developer', // Update with your job title
+    jobTitle: 'Software Engineer',
     worksFor: {
       '@type': 'Organization',
-      name: 'Independent', // Update with your organization
+      name: 'Avtal',
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Austin',
+      addressRegion: 'TX',
+      addressCountry: 'US',
     },
     sameAs: [
       SITE_CONFIG.social.twitter,
@@ -176,10 +175,6 @@ export function generateBlogPostSchema(
       '@type': 'Person',
       '@id': `${SITE_CONFIG.url}#person`,
       name: SITE_CONFIG.author.name,
-      logo: {
-        '@type': 'ImageObject',
-        url: generateImageURL('/logo.png', SITE_CONFIG.url),
-      },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',

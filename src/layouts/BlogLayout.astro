@@ -13,6 +13,8 @@ export interface Props {
   tags?: string[];
   heroImage?: string;
   heroImageAlt?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
   draft?: boolean;
 }
 
@@ -25,6 +27,8 @@ const {
   tags = [],
   heroImage,
   heroImageAlt,
+  ogImage,
+  ogImageAlt,
   draft = false,
 } = Astro.props;
 
@@ -41,9 +45,9 @@ const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbs);
 const publishedTime = pubDate.toISOString();
 const modifiedTime = updatedDate?.toISOString();
 
-// Use hero image or default
-const seoImage = heroImage || SITE_CONFIG.defaultImage;
-const seoImageAlt = heroImageAlt || `${title} - ${SITE_CONFIG.name}`;
+// Social preview image: explicit ogImage, then the hero image, then the site default
+const seoImage = ogImage || heroImage || SITE_CONFIG.defaultImage;
+const seoImageAlt = (ogImage && ogImageAlt) || (heroImage && heroImageAlt) || SITE_CONFIG.defaultImageAlt;
 
 // Calculate reading time (approximate)
 const content = await Astro.slots.render('default');
