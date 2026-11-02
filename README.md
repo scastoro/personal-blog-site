@@ -1,197 +1,120 @@
-# Personal Blog Site
+# salcastoro.com
 
-A modern personal website built with Astro, TypeScript, and Tailwind CSS.
+Personal site and blog for Sal Castoro, built with Astro and Tailwind CSS and served from a Cloudflare Worker.
 
-## 🚀 Project Overview
+Live at **https://salcastoro.com**.
 
-This is a performance-first personal blog site built using Astro's partial hydration architecture. The site features a clean, responsive design with dark mode support and is optimized for excellent SEO and accessibility.
+## Features
 
-## ✨ Features
+- Static Astro site: home, about, blog index, blog posts, and a 404 page
+- Markdown/MDX blog posts in a typed content collection
+- Light, dark, and system themes with a manual toggle
+- Open Graph and Twitter cards with a default social image, JSON-LD structured data, sitemap, and RSS feed
+- Hashed assets cached for a year at the edge
 
-- **Astro Framework**: Static site generation with partial hydration
-- **TypeScript**: Type-safe development with strict configuration
-- **Tailwind CSS**: Utility-first styling with custom design tokens
-- **MDX Support**: Rich content creation with component embedding
-- **Dark Mode**: System-aware theme with manual toggle
-- **Responsive Design**: Mobile-first approach with smooth animations
-- **SEO Optimized**: Meta tags, Open Graph, and sitemap generation
-- **Content Collections**: Type-safe blog posts and author management
+## Tech stack
 
-## 🛠️ Tech Stack
+- **Framework**: Astro 7
+- **Styling**: Tailwind CSS 4 (Vite plugin) with `@tailwindcss/typography`
+- **Content**: Markdown/MDX, glob-loaded content collections
+- **Language**: TypeScript (strict)
+- **Fonts**: Inter and JetBrains Mono from Google Fonts
+- **Hosting**: Cloudflare Workers Static Assets, deployed by Workers Builds
 
-- **Framework**: Astro 7.4+
-- **Styling**: Tailwind CSS 4.3+ with the Vite plugin and existing design-token configuration
-- **Content**: Markdown/MDX with glob-loaded content collections and the Unified Markdown processor
-- **TypeScript**: Strict mode enabled
-- **Fonts**: Inter + JetBrains Mono
-- **Icons**: Heroicons (SVG)
-
-## 📁 Project Structure
+## Project structure
 
 ```
+public/                  # Copied to dist/ as-is
+├── _headers             # Cache headers for /_astro/* (Workers Static Assets)
+├── .assetsignore        # Files never uploaded to Cloudflare
+├── og-image.jpg         # Default 1200x630 social preview image
+├── favicon*, icon-*.png, apple-touch-icon.png, site.webmanifest
+├── robots.txt
+├── rss-styles.xsl       # Browser styling for /rss.xml
+└── images/              # Static images referenced by posts
 src/
+├── assets/images/       # Images processed by Astro (profile photo, post images)
 ├── components/
+│   ├── blog/PostCard.astro
 │   ├── layout/          # Header, Footer, Navigation
-│   ├── blog/            # Blog-specific components
-│   ├── ui/              # Reusable UI components
-│   └── mdx/             # Custom MDX components
-├── content/
-│   ├── blog/            # Blog posts (MDX)
-│   └── authors/         # Author information
-├── content.config.ts    # Content collection loaders and schemas
-├── layouts/
-│   ├── BaseLayout.astro # Base HTML template
-│   └── PageLayout.astro # Page wrapper with header/footer
+│   ├── mdx/             # Callout, CodeBlock, Image, Quote (for .mdx posts)
+│   └── ui/ThemeToggle.astro
+├── content/blog/        # Blog posts (.md / .mdx)
+├── content.config.ts    # Blog collection schema
+├── layouts/             # BaseLayout (head/SEO), PageLayout, BlogLayout
 ├── pages/
-│   ├── index.astro      # Homepage
-│   └── 404.astro        # Error page
-├── styles/
-│   └── global.css       # Global styles and Tailwind imports
-└── utils/               # Utility functions
+│   ├── index.astro      # Home
+│   ├── about.astro      # About, skills, and work experience
+│   ├── blog/            # Blog index and [slug] post pages
+│   ├── rss.xml.ts       # RSS feed
+│   └── 404.astro
+├── styles/global.css    # Tailwind entry point and design tokens
+└── utils/seo.ts         # SITE_CONFIG (name, description, email, socials) and JSON-LD helpers
 ```
 
-## 🚀 Getting Started
+## Getting started
 
-### Prerequisites
-
-- Node.js 24 (v24.22.1 specified in `.nvmrc`)
-- npm (use the committed `package-lock.json` for reproducible installs)
-
-### Installation
+Requires Node.js 24 (`.nvmrc`) and npm.
 
 ```bash
-# Select the project runtime
-nvm install
-nvm use
-
-# Install dependencies
+nvm install && nvm use
 npm ci
-
-# Start development server
 npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
 ```
 
-### Development Commands
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start the Astro dev server |
+| `npm run check` | Type-check with `astro check` |
+| `npm run build` | Type-check, then build to `dist/` |
+| `npm run preview` | Serve the built site locally |
+| `npm run deploy` | Build and deploy with Wrangler (normally CI does this) |
 
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run preview      # Preview production build
-npm run check        # Run Astro type checking
-npm run sync         # Sync content collections
-```
+## Writing posts
 
-## 📝 Content Management
+Add a `.md` or `.mdx` file to `src/content/blog/`. The filename becomes the URL (`/blog/<filename>/`), so don't rename published posts.
 
-### Creating Blog Posts
-
-Create new blog posts in `src/content/blog/` using Markdown (`.md`) or MDX (`.mdx`). The filename becomes the post ID and URL; preserve filenames when updating existing posts.
-
-```mdx
+```md
 ---
-title: "Your Post Title"
-description: "Brief description"
-pubDate: 2024-01-01
-tags: ["web-dev", "astro"]
+title: 'Post title'
+description: 'Under 160 characters; used for SEO, cards, and RSS'
+pubDate: 2026-11-01
+tags: ['Astro', 'Cloudflare']
+draft: false
+# Optional:
+# heroImage: '/images/my-post/hero.webp'
+# heroImageAlt: 'Description'
+# ogImage: '/images/my-post/social.jpg'   # 1200x630; defaults to heroImage, then /og-image.jpg
+# ogImageAlt: 'Description'
 ---
-
-Your content here...
 ```
 
-### Adding Authors
+Drafts (`draft: true`) are excluded from the blog, RSS, and the sitemap. The full schema is in `src/content.config.ts`.
 
-Add author information in `src/content/authors/` as JSON files:
+## Updating site content
 
-```json
-{
-  "name": "Your Name",
-  "bio": "Brief bio",
-  "avatar": "/images/avatar.jpg",
-  "social": {
-    "twitter": "username",
-    "github": "username"
-  }
-}
-```
+- **Name, description, email, social links, structured data**: `src/utils/seo.ts`
+- **Home page text**: `src/pages/index.astro`
+- **About page bio, skills, and experience**: `src/pages/about.astro`
+- **Footer social links**: `src/components/layout/Footer.astro`
+- **Default social image**: replace `public/og-image.jpg` (1200x630)
 
-## 🎨 Customization
+## Styling notes
 
-### Theme Colors
+`src/styles/global.css` loads Tailwind and the legacy `tailwind.config.mjs` design tokens. Dark mode uses the `.dark` class that the theme toggle sets on `<html>`. Tailwind 4 targets Safari 16.4+, Chromium 111+, and Firefox 128+.
 
-Edit `tailwind.config.mjs` to customize the color scheme and design tokens.
-The config is loaded explicitly from `src/styles/global.css`; dark variants follow the `.dark` class used by the theme toggle. Component styles using Tailwind directives reference the global stylesheet with `@reference`.
-Tailwind 4 targets modern browsers: Safari 16.4+, Chromium 111+, and Firefox 128+.
+`package.json` overrides `postcss-selector-parser` to 6.1.5 for `@tailwindcss/typography`; revisit it when upgrading that plugin. TypeScript stays on 5.9.x for compatibility with `@astrojs/check`.
 
-The typography plugin currently pins an older selector parser. A scoped npm override selects the patched, same-major `postcss-selector-parser` 6.1.5; reassess it when upgrading the plugin. TypeScript stays on 5.9.x for compatibility with the Astro checker.
+## Deployment
 
-### Typography
+The site is a Cloudflare Worker with static assets (migrated from Cloudflare Pages in November 2026). There is no Worker script; `wrangler.jsonc` points the Worker at `dist/`.
 
-The site uses Inter for body text and JetBrains Mono for code. Update font imports in `src/styles/global.css`.
+- **Worker**: `personal-blog-site`, custom domain `salcastoro.com` (also https://personal-blog-site.salcastoro.workers.dev)
+- **www**: `www.salcastoro.com` 301-redirects to the apex using a zone Redirect Rule
+- **Production**: every push to `main` runs Workers Builds: `npm run build`, then `npx wrangler deploy`
+- **Previews**: pushes to other branches run `npx wrangler preview`, which creates a Preview URL for that branch and comments it on the pull request
+- **Node.js**: Workers Builds uses the version in `.nvmrc`
 
-### Site Configuration
+To deploy by hand (for example, if CI is down): `npm run deploy`. Wrangler needs to be logged in (`npx wrangler login`).
 
-Update site metadata in `astro.config.mjs`:
-
-```js
-export default defineConfig({
-  site: 'https://your-domain.com',
-  // ... other config
-});
-```
-
-## 🔧 Configuration Files
-
-- `astro.config.mjs` - Astro configuration and integrations
-- `tailwind.config.mjs` - Tailwind CSS configuration
-- `tsconfig.json` - TypeScript configuration with path aliases
-- `src/content.config.ts` - Content collection loaders and schemas
-
-## 📈 Performance
-
-The site is optimized for performance with:
-
-- Static site generation
-- Minimal JavaScript bundle
-- Optimized images and fonts
-- Critical CSS inlining
-- Lazy loading where appropriate
-
-## 🌐 Deployment
-
-This site is served by a **Cloudflare Worker with Static Assets** (migrated from Cloudflare Pages in November 2026). There is no Worker script; `wrangler.jsonc` points the Worker at the `dist/` build output.
-
-### Production
-- **Live site**: https://salcastoro.com (`www` redirects to the apex with a zone Redirect Rule)
-- **Worker**: `personal-blog-site` (also at https://personal-blog-site.salcastoro.workers.dev)
-- **CI/CD**: Workers Builds, connected to the `main` branch of `scastoro/personal-blog-site`
-- **Build command**: `npm run build`
-- **Deploy command**: `npx wrangler deploy`
-- **Node.js**: v24.22.1, read from `.nvmrc` by the build image
-
-### Configuration
-- `wrangler.jsonc`: Worker name, assets directory, `404-page` handling, and the `salcastoro.com` custom domain
-- `public/_headers`: long-lived immutable caching for hashed `/_astro/*` assets
-- `public/.assetsignore`: keeps `.DS_Store` files out of uploads
-
-### Manual deploy
-
-```bash
-npm run build
-npx wrangler deploy
-```
-
-The old Pages project (`personal-blog-site.pages.dev`) has automatic deployments turned off and no longer serves the custom domain.
-
-## 📄 License
-
-MIT License - see LICENSE file for details.
-
-## 🤝 Contributing
-
-This is a personal project, but feel free to fork and adapt for your own use!
+Use Wrangler for this project. The `cf` CLI can't build Astro 6 or later yet.

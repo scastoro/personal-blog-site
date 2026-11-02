@@ -59,7 +59,7 @@ const { title, description, variant = 'primary' } = Astro.props;
 ```
 
 ### Content Collections Setup
-- Define strict schemas in `src/content/config.ts`
+- Define strict schemas in `src/content.config.ts`
 - Use proper TypeScript types for frontmatter
 - Implement validation for required fields
 - Set up proper slug generation and sorting
