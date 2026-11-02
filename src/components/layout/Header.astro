@@ -9,20 +9,20 @@ import ThemeToggle from '../ui/ThemeToggle.astro';
       <!-- Logo -->
       <a
         href="/"
-        class="flex items-center text-xl font-semibold transition-colors hover:text-[var(--color-accent-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-2 rounded-md"
-        aria-label="Go to homepage"
+        class="flex items-center gap-3 text-lg font-semibold tracking-tight text-[var(--color-text-primary)] transition-colors hover:text-[var(--color-accent-primary)] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-2 rounded-md"
+        aria-label="Sal Castoro, go to homepage"
       >
         <svg
           width="32"
           height="32"
           viewBox="0 0 32 32"
-          class="text-[var(--color-accent-primary)] flex-shrink-0"
-          role="img"
-          aria-label="Personal blog logo"
+          class="text-[var(--color-accent-primary)] shrink-0"
+          aria-hidden="true"
         >
           <rect width="32" height="32" rx="8" fill="currentColor" opacity="0.1"/>
           <circle cx="16" cy="16" r="6" fill="currentColor"/>
         </svg>
+        <span>Sal Castoro</span>
       </a>
       
       <!-- Desktop Navigation -->
@@ -33,7 +33,7 @@ import ThemeToggle from '../ui/ThemeToggle.astro';
       
       <!-- Mobile Menu Button -->
       <button 
-        class="md:hidden p-2 rounded-md text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-muted)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-border-focus)]"
+        class="md:hidden p-2 rounded-md text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-muted)] transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[var(--color-border-focus)]"
         aria-label="Toggle navigation menu"
         aria-expanded="false"
         aria-controls="mobile-menu"

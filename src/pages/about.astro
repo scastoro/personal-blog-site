@@ -3,10 +3,13 @@ import PageLayout from '@/layouts/PageLayout.astro';
 import { Image } from 'astro:assets';
 import profileImage from '@/assets/images/profile.jpg';
 
-interface Skill {
+interface SkillGroup {
   name: string;
-  level: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
-  category: 'Frontend' | 'Backend' | 'Tools' | 'Languages' | 'Design';
+  /** Heroicons outline path(s) */
+  icon: string[];
+  /** Tailwind classes for the icon tile */
+  tone: string;
+  skills: string[];
 }
 
 interface Experience {
@@ -19,33 +22,50 @@ interface Experience {
 }
 
 
-const skills: Skill[] = [
-  // Frontend
-  { name: 'React', level: 'Expert', category: 'Frontend' },
-  { name: 'TypeScript', level: 'Advanced', category: 'Frontend' },
-  { name: 'Astro', level: 'Advanced', category: 'Frontend' },
-  { name: 'Tailwind CSS', level: 'Expert', category: 'Frontend' },
-  { name: 'Next.js', level: 'Advanced', category: 'Frontend' },
-  
-  // Backend
-  { name: 'Node.js', level: 'Advanced', category: 'Backend' },
-  { name: 'Python', level: 'Advanced', category: 'Backend' },
-  { name: 'PostgreSQL', level: 'Advanced', category: 'Backend' },
-  { name: 'MongoDB', level: 'Intermediate', category: 'Backend' },
-  
-  // Tools
-  { name: 'Git', level: 'Expert', category: 'Tools' },
-  { name: 'Docker', level: 'Intermediate', category: 'Tools' },
-  { name: 'AWS', level: 'Intermediate', category: 'Tools' },
-  { name: 'Figma', level: 'Advanced', category: 'Design' },
+const skillGroups: SkillGroup[] = [
+  {
+    name: 'Frontend',
+    icon: ['M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'],
+    tone: 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400',
+    skills: ['React', 'TypeScript', 'Next.js', 'Astro', 'Tailwind CSS', 'shadcn/ui', 'Angular', 'SwiftUI'],
+  },
+  {
+    name: 'Backend & Data',
+    icon: ['M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2'],
+    tone: 'bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400',
+    skills: ['Node.js', 'Hono', 'Express', 'Fastify', 'Go', 'Python', '.NET Core', 'REST APIs', 'PostgreSQL', 'MSSQL', 'MongoDB'],
+  },
+  {
+    name: 'Cloud & DevOps',
+    icon: ['M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z'],
+    tone: 'bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-400',
+    skills: ['AWS', 'Cloudflare Workers', 'Azure', 'GitHub Actions', 'Azure DevOps', 'Docker', 'CI/CD'],
+  },
+  {
+    name: 'AI & Developer Tools',
+    icon: ['M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z'],
+    tone: 'bg-orange-100 text-orange-600 dark:bg-orange-900 dark:text-orange-400',
+    skills: ['Claude Code', 'Cursor', 'GitHub Copilot', 'LangChain.js', 'Agentic workflows', 'Git'],
+  },
 ];
 
 const experiences: Experience[] = [
   {
+    title: 'Software Engineer',
+    company: 'Avtal',
+    period: 'April 2026 - Present',
+    location: 'Austin, TX',
+    description: [
+      'Led and completed the migration of the customer payment portal to a modern stack (React, Hono, TypeScript), improving page load times by up to 27%',
+      'Contributed to a custom content authoring system for SMS and email communications while migrating templates from the legacy platform'
+    ],
+    technologies: ['React', 'TypeScript', 'Hono', 'PostgreSQL']
+  },
+  {
     title: 'Application Engineer',
     company: 'Great American Insurance Group',
-    period: 'April 2023 - Present',
-    location: '',
+    period: 'April 2023 - April 2026',
+    location: 'Remote',
     description: [
       'Led modernization of flagship commercial insurance quoting platform, migrating from legacy systems to React and Node.js/Express, resulting in 30% faster page load times and ~20% reduction in quoting errors reported by brokers',
       'Designed and launched a new multi-coverage insurance product from backend schema to frontend UI, contributing to a 12% increase in broker-submitted quotes in its first quarter',
@@ -59,18 +79,18 @@ const experiences: Experience[] = [
     title: 'Software Developer',
     company: 'PS Solutions',
     period: 'May 2022 - March 2023',
-    location: '',
+    location: 'Wilmington, NC',
     description: [
-      'Built PTO request and tracking system in React and Node.js/Express deployed via AWS',
-      'Integrated RingCentral calling functionality into client CRM using TypeScript and microservices architecture'
+      'Built a PTO request and tracking system in Angular 14 and .NET Core, deployed via Azure',
+      'Integrated RingCentral calling functionality into a client CRM using .NET MVC and JavaScript'
     ],
-    technologies: ['React', 'Node.js', 'Express', 'AWS', 'TypeScript', 'RingCentral API', 'Microservices']
+    technologies: ['Angular', 'TypeScript', '.NET Core', '.NET MVC', 'Azure', 'RingCentral API']
   },
   {
     title: 'IT Analyst',
     company: 'Clima Cube Self Storage',
-    period: 'Jan 2020 - Apr 2022',
-    location: '',
+    period: 'January 2021 - April 2022',
+    location: 'Hampstead, NC',
     description: [
       'Developed a custom price tracking tool with React and Next.js using TypeScript that increased observability into competitor pricing allowing for frequent rate adjustment'
     ],
@@ -78,13 +98,11 @@ const experiences: Experience[] = [
   }
 ];
 
-
-const skillCategories = ['Frontend', 'Backend', 'Tools', 'Design'] as const;
 ---
 
 <PageLayout
   title="About Me"
-  description="Learn more about my background, skills, and professional experience as a software engineer."
+  description="Sal Castoro is a software engineer at Avtal in Austin, TX. Background, skills, and experience across full-stack web development."
 >
   <!-- Hero Section -->
   <section class="py-16 lg:py-20">
@@ -120,16 +138,18 @@ const skillCategories = ['Frontend', 'Backend', 'Tools', 'Design'] as const;
             </h1>
             <div class="space-y-6">
               <p class="text-xl lg:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed">
-                I'm a passionate software engineer with over 5 years of experience creating amazing digital experiences. 
-                I love turning complex problems into simple, beautiful solutions.
+                I'm a software engineer with six years of experience building full-stack web applications,
+                from commercial insurance quoting platforms to payment portals. I like taking legacy systems
+                and turning them into fast, maintainable software.
               </p>
               <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                Currently, I work with modern frontend technologies like React and Astro, 
-                while also designing backend systems with Node.js and Python on cloud infrastructure such as AWS. I'm always excited to learn new technologies and tackle challenging projects.
+                I'm currently a software engineer at Avtal in Austin, where I work across the stack with React,
+                TypeScript, and Hono. Before that, I spent three years modernizing commercial insurance platforms at
+                Great American Insurance Group. I'm always excited to learn new technologies and tackle challenging projects.
               </p>
               <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                When I'm not coding, you can find me exploring new technologies, playing tabletop RPGs, 
-                or sharing my knowledge through blog posts and community involvement.
+                Outside of work, I build side projects like RunWalk, my iPhone and Apple Watch run/walk
+                training app, play tabletop RPGs, and write about what I learn here on the blog.
               </p>
             </div>
           </div>
@@ -146,66 +166,31 @@ const skillCategories = ['Frontend', 'Backend', 'Tools', 'Design'] as const;
           Skills & Expertise
         </h2>
         <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          A comprehensive overview of my technical skills and areas of expertise
+          The languages, frameworks, and tools I use day to day
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
-        {skillCategories.map(category => (
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        {skillGroups.map(group => (
           <div class="card">
             <div class="card__body">
-              <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
-                {category === 'Frontend' && (
-                  <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                )}
-                {category === 'Backend' && (
-                  <div class="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2" />
-                    </svg>
-                  </div>
-                )}
-                {category === 'Tools' && (
-                  <div class="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                  </div>
-                )}
-                {category === 'Design' && (
-                  <div class="w-8 h-8 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                    </svg>
-                  </div>
-                )}
-                {category}
+              <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-5 flex items-center gap-3">
+                <span class={`w-8 h-8 rounded-lg flex items-center justify-center ${group.tone}`}>
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    {group.icon.map(d => (
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={d} />
+                    ))}
+                  </svg>
+                </span>
+                {group.name}
               </h3>
-              <div class="space-y-4">
-                {skills
-                  .filter(skill => skill.category === category)
-                  .map(skill => (
-                    <div class="flex items-center justify-between">
-                      <span class="text-gray-700 dark:text-gray-300 font-medium">
-                        {skill.name}
-                      </span>
-                      <span class={`tag ${
-                        skill.level === 'Expert' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                        skill.level === 'Advanced' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
-                        skill.level === 'Intermediate' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                        'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
-                      }`}>
-                        {skill.level}
-                      </span>
-                    </div>
-                  ))
-                }
-              </div>
+              <ul class="flex flex-wrap gap-2" aria-label={`${group.name} skills`}>
+                {group.skills.map(skill => (
+                  <li class="px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700">
+                    {skill}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         ))}
@@ -236,10 +221,10 @@ const skillCategories = ['Frontend', 'Backend', 'Tools', 'Design'] as const;
               
               <div class="flex gap-8">
                 <!-- Timeline dot -->
-                <div class="flex-shrink-0">
+                <div class="shrink-0">
                   <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center shadow-lg">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0H8m8 0v2a2 2 0 002 2h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                   </div>
                 </div>
@@ -266,7 +251,7 @@ const skillCategories = ['Frontend', 'Backend', 'Tools', 'Design'] as const;
                       <ul class="space-y-2 mb-6">
                         {experience.description.map(item => (
                           <li class="flex items-start gap-3 text-gray-600 dark:text-gray-300">
-                            <div class="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                            <div class="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 shrink-0"></div>
                             {item}
                           </li>
                         ))}

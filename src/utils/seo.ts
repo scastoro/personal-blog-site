@@ -1,15 +1,15 @@
 // SEO Constants and Utilities
 export const SITE_CONFIG = {
-  name: 'Sal Castoro - Developer Digital Space',
-  description: 'High-performance web development insights, modern JavaScript frameworks, and best practices for building exceptional user experiences. Explore tutorials, performance optimization tips, and development workflows from Sal Castoro.',
-  url: 'https://salcastoro.com', // Update with your actual domain
+  name: 'Sal Castoro',
+  description: 'Sal Castoro is a software engineer in Austin, TX building full-stack web applications with React and TypeScript, and writing about AI coding tools and side projects.',
+  url: 'https://salcastoro.com',
   defaultImage: '/og-image.jpg',
   author: {
     name: 'Sal Castoro',
     twitter: '@s_castoro',
     github: 'scastoro',
     linkedin: 'sal-castoro-3b1050178',
-    email: 'hello@salcastoro.com', // Update with your email
+    email: 'sal@salcastoro.com',
   },
   social: {
     twitter: 'https://x.com/s_castoro',
@@ -18,7 +18,7 @@ export const SITE_CONFIG = {
   },
   language: 'en',
   locale: 'en_US',
-  timezone: 'America/New_York', // Update with your timezone
+  timezone: 'America/Chicago',
 } as const;
 
 export interface SEOProps {

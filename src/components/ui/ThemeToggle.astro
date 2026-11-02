@@ -3,15 +3,15 @@
 ---
 
 <button
-  id="theme-toggle"
+  data-theme-toggle
   class="theme-toggle"
   aria-label="Toggle theme"
   title="Toggle between light, dark, and system theme"
 >
-  <!-- Sun icon (visible in dark mode) -->
+  <!-- Sun icon (light theme active) -->
   <svg
-    id="theme-toggle-light-icon"
-    class="w-5 h-5 hidden dark:block transition-transform"
+    data-theme-icon="light"
+    class="w-5 h-5 hidden"
     fill="currentColor"
     viewBox="0 0 20 20"
     aria-hidden="true"
@@ -22,112 +22,82 @@
       clip-rule="evenodd"
     />
   </svg>
-  
-  <!-- Moon icon (visible in light mode) -->
+
+  <!-- Moon icon (dark theme active) -->
   <svg
-    id="theme-toggle-dark-icon"
-    class="w-5 h-5 block dark:hidden transition-transform"
+    data-theme-icon="dark"
+    class="w-5 h-5 hidden"
     fill="currentColor"
     viewBox="0 0 20 20"
     aria-hidden="true"
   >
     <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
   </svg>
-  
-  <!-- System icon (when system theme is active) -->
+
+  <!-- Monitor icon (system theme active; default before the script runs) -->
   <svg
-    id="theme-toggle-system-icon"
-    class="w-5 h-5 hidden transition-transform"
+    data-theme-icon="system"
+    class="w-5 h-5"
     fill="currentColor"
     viewBox="0 0 20 20"
     aria-hidden="true"
   >
-    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h12a1 1 0 011 1v8a1 1 0 01-1 1H4a1 1 0 01-1-1V8zm2 2a1 1 0 000 2h2a1 1 0 100-2H5z" clip-rule="evenodd" />
+    <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clip-rule="evenodd" />
   </svg>
   
   <!-- Screen reader status -->
-  <span id="theme-status" class="sr-only">Current theme: Light</span>
+  <span data-theme-status class="sr-only">Current theme: Light</span>
 </button>
 
 <script>
-  const themeToggle = document.getElementById('theme-toggle');
-  const themeStatus = document.getElementById('theme-status');
-  const lightIcon = document.getElementById('theme-toggle-light-icon');
-  const darkIcon = document.getElementById('theme-toggle-dark-icon');
-  const systemIcon = document.getElementById('theme-toggle-system-icon');
+  // The header renders this component twice (desktop and mobile), so select every instance.
+  const toggles = document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
   const html = document.documentElement;
-  
-  // Get theme from localStorage or default to 'system'
-  let currentTheme = localStorage.getItem('theme') || 'system';
-  
-  function updateTheme(theme: string) {
+  const themeNames = { light: 'Light', dark: 'Dark', system: 'System' } as const;
+  type Theme = keyof typeof themeNames;
+
+  const stored = localStorage.getItem('theme');
+  let currentTheme: Theme = stored === 'light' || stored === 'dark' ? stored : 'system';
+
+  function updateTheme(theme: Theme) {
     currentTheme = theme;
     localStorage.setItem('theme', theme);
-    
+
     const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    
-    // Update DOM classes
     html.classList.toggle('dark', isDark);
-    
-    // Update icons visibility
-    lightIcon?.classList.toggle('hidden', !isDark);
-    darkIcon?.classList.toggle('hidden', isDark || theme === 'system');
-    systemIcon?.classList.toggle('hidden', theme !== 'system');
-    
-    // Update screen reader status
-    const themeNames = { light: 'Light', dark: 'Dark', system: 'System' };
-    if (themeStatus) {
-      themeStatus.textContent = `Current theme: ${themeNames[theme as keyof typeof themeNames]}`;
-    }
-    
-    // Update button title
-    if (themeToggle) {
-      const nextTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light';
-      const nextThemeName = themeNames[nextTheme as keyof typeof themeNames];
-      themeToggle.setAttribute('title', `Switch to ${nextThemeName.toLowerCase()} theme`);
-      themeToggle.setAttribute('aria-label', `Switch to ${nextThemeName.toLowerCase()} theme`);
-    }
+
+    const nextTheme: Theme = theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light';
+    const label = `Switch to ${themeNames[nextTheme].toLowerCase()} theme`;
+
+    toggles.forEach((toggle) => {
+      toggle.querySelectorAll<SVGElement>('[data-theme-icon]').forEach((icon) => {
+        icon.classList.toggle('hidden', icon.dataset.themeIcon !== theme);
+      });
+      const status = toggle.querySelector('[data-theme-status]');
+      if (status) status.textContent = `Current theme: ${themeNames[theme]}`;
+      toggle.setAttribute('title', label);
+      toggle.setAttribute('aria-label', label);
+    });
   }
-  
-  // Initialize theme
+
   updateTheme(currentTheme);
-  
-  // Toggle theme on button click
-  themeToggle?.addEventListener('click', () => {
-    if (currentTheme === 'light') {
-      updateTheme('dark');
-    } else if (currentTheme === 'dark') {
-      updateTheme('system');
-    } else {
-      updateTheme('light');
-    }
-    
-    // Announce theme change to screen readers
-    const announcement = document.createElement('div');
-    announcement.setAttribute('aria-live', 'polite');
-    announcement.setAttribute('aria-atomic', 'true');
-    announcement.className = 'sr-only';
-    announcement.textContent = `Theme switched to ${currentTheme}`;
-    document.body.appendChild(announcement);
-    
-    // Remove announcement after it's been read
-    setTimeout(() => {
-      document.body.removeChild(announcement);
-    }, 1000);
+
+  toggles.forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      updateTheme(currentTheme === 'light' ? 'dark' : currentTheme === 'dark' ? 'system' : 'light');
+
+      // Announce theme change to screen readers
+      const announcement = document.createElement('div');
+      announcement.setAttribute('aria-live', 'polite');
+      announcement.setAttribute('aria-atomic', 'true');
+      announcement.className = 'sr-only';
+      announcement.textContent = `Theme switched to ${themeNames[currentTheme].toLowerCase()}`;
+      document.body.appendChild(announcement);
+      setTimeout(() => announcement.remove(), 1000);
+    });
   });
-  
-  // Listen for system theme changes
+
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-    if (currentTheme === 'system') {
-      updateTheme('system');
-    }
-  });
-  
-  // Keyboard navigation support
-  themeToggle?.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      themeToggle.click();
-    }
+    if (currentTheme === 'system') updateTheme('system');
   });
 </script>

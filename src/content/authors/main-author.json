@@ -1,18 +1,18 @@
 {
   "name": "Sal Castoro",
-  "bio": "Full-stack developer passionate about web technologies, performance, and creating inclusive digital experiences.",
-  "longBio": "Experienced full-stack developer with expertise in modern web technologies including TypeScript, React, and Node.js. Passionate about web performance, accessibility, and developer experience. Enjoys exploring new technologies and sharing knowledge with the community.",
+  "bio": "Software engineer in Austin building full-stack web applications and writing about AI coding tools and side projects.",
+  "longBio": "Software engineer with experience modernizing legacy systems and building full-stack products with React, TypeScript, Node.js, and Go. Currently at Avtal; previously at Great American Insurance Group.",
   "avatar": "/images/profile-400.jpg",
-  "email": "hello@salcastoro.com",
+  "email": "sal@salcastoro.com",
   "website": "https://salcastoro.com",
   "social": {
     "twitter": "s_castoro",
     "github": "scastoro",
     "linkedin": "sal-castoro-3b1050178"
   },
-  "title": "Senior Frontend Developer",
-  "company": "Independent",
-  "location": "United States",
+  "title": "Software Engineer",
+  "company": "Avtal",
+  "location": "Austin, TX",
   "expertise": [
     "JavaScript",
     "TypeScript",
@@ -22,7 +22,9 @@
     "Accessibility",
     "Astro"
   ],
-  "languages": ["en"],
+  "languages": [
+    "en"
+  ],
   "showInAuthorsList": true,
   "featured": true,
   "joinDate": "2024-01-01"
