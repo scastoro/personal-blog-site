@@ -164,45 +164,29 @@ The site is optimized for performance with:
 
 ## 🌐 Deployment
 
-This site is deployed on **Cloudflare Pages** with automatic deployments from the main branch.
+This site is served by a **Cloudflare Worker with Static Assets** (migrated from Cloudflare Pages in November 2026). There is no Worker script; `wrangler.jsonc` points the Worker at the `dist/` build output.
 
-### Production Deployment
-- **Live Site**: https://salcastoro.com
-- **Platform**: Cloudflare Pages
-- **Build Command**: `npm run build`
-- **Output Directory**: `dist`
-- **Node.js Version**: v24.22.1 (specified in `.nvmrc`; keep any Cloudflare `NODE_VERSION` override aligned when changing runtimes)
+### Production
+- **Live site**: https://salcastoro.com (`www` redirects to the apex with a zone Redirect Rule)
+- **Worker**: `personal-blog-site` (also at https://personal-blog-site.salcastoro.workers.dev)
+- **CI/CD**: Workers Builds, connected to the `main` branch of `scastoro/personal-blog-site`
+- **Build command**: `npm run build`
+- **Deploy command**: `npx wrangler deploy`
+- **Node.js**: v24.22.1, read from `.nvmrc` by the build image
 
-### Deployment Features
-- ✅ **Automatic deployments** from GitHub main branch
-- ✅ **Preview deployments** for pull requests
-- ✅ **Global CDN** with 200+ edge locations
-- ✅ **Free SSL certificate** and HTTPS
-- ✅ **Fast builds** (typically under 2 minutes)
-- ✅ **Built-in analytics** (privacy-focused)
+### Configuration
+- `wrangler.jsonc`: Worker name, assets directory, `404-page` handling, and the `salcastoro.com` custom domain
+- `public/_headers`: long-lived immutable caching for hashed `/_astro/*` assets
+- `public/.assetsignore`: keeps `.DS_Store` files out of uploads
 
-### Manual Deployment Steps
+### Manual deploy
 
-1. **Connect Repository to Cloudflare Pages**
-   - Go to [Cloudflare Pages Dashboard](https://dash.cloudflare.com/pages)
-   - Click "Create a project" → "Connect to Git"
-   - Select this repository: `scastoro/personal-blog-site`
+```bash
+npm run build
+npx wrangler deploy
+```
 
-2. **Configure Build Settings**
-   - Framework preset: **Astro**
-   - Build command: `npm run build`
-   - Build output directory: `dist`
-   - Root directory: `/`
-
-3. **Add Custom Domain**
-   - Go to Custom domains tab
-   - Add `salcastoro.com`
-   - Configure DNS as directed
-
-### Alternative Hosting Options
-- **Netlify**: Connect your Git repository
-- **Vercel**: Import your project
-- **GitHub Pages**: Use GitHub Actions workflow
+The old Pages project (`personal-blog-site.pages.dev`) has automatic deployments turned off and no longer serves the custom domain.
 
 ## 📄 License
 

@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // Static Astro site served with Workers Static Assets (migrated from Cloudflare Pages).
+  "name": "personal-blog-site",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    // Serve Astro's 404.html with a 404 status for unknown paths.
+    "not_found_handling": "404-page"
+  },
+  "routes": [
+    { "pattern": "salcastoro.com", "custom_domain": true }
+  ],
+  "workers_dev": true,
+  "observability": {
+    "enabled": true
+  }
+}
