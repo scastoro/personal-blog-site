@@ -14,7 +14,7 @@ Use Node 24 (`nvm use`, from `.nvmrc`) and npm.
 npm ci            # install
 npm run dev       # dev server
 npm run check     # astro check (type-check)
-npm run build     # astro check && astro build -> dist/
+npm run build     # astro check && astro build -> dist/, then add the CSP to dist/_headers
 npm run preview   # serve dist/
 npm run deploy    # build + wrangler deploy (CI normally does this)
 ```
@@ -36,6 +36,9 @@ There is no lint, unit-test, or e2e setup. `npm run build` is the gate: it must 
 - Dark mode is class-based (`.dark` on `<html>`). `ThemeToggle` renders twice in the header (desktop and mobile), so select it with `[data-theme-toggle]`, never by element ID.
 - Keep site-wide text consistent with `SITE_CONFIG` and the about page. Work history follows Sal's current resume; Great American Insurance Group is described as React + Node.js/Express.
 - Every route has a trailing slash (`/about/`); internal links and RSS links use that form.
+- Images go in `src/assets/images/` so Sharp optimizes them; `public/` files ship unprocessed.
+- Security headers live in `public/_headers`. The CSP is generated after the build by `scripts/csp-headers.mjs`, which hashes inline scripts. If you add an external script, font, iframe, or image host, add it to the directives there or the live site will block it. Don't add `'unsafe-inline'` to `script-src`.
+- Cloudflare Web Analytics is injected at the edge (zone auto-setup), not in the code.
 - Don't commit `dist/`, `.astro/`, or `.DS_Store` (all gitignored).
 
 ## Deployment

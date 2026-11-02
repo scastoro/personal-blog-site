@@ -10,7 +10,10 @@ Live at **https://salcastoro.com**.
 - Markdown/MDX blog posts in a typed content collection
 - Light, dark, and system themes with a manual toggle
 - Open Graph and Twitter cards with a default social image, JSON-LD structured data, sitemap, and RSS feed
+- Images optimized at build time with Sharp (WebP, responsive sizes, animated GIFs preserved)
+- Security headers and a hash-based Content-Security-Policy
 - Hashed assets cached for a year at the edge
+- Cloudflare Web Analytics (cookieless)
 
 ## Tech stack
 
@@ -24,8 +27,9 @@ Live at **https://salcastoro.com**.
 ## Project structure
 
 ```
+scripts/csp-headers.mjs  # Post-build: adds the CSP to dist/_headers
 public/                  # Copied to dist/ as-is
-├── _headers             # Cache headers for /_astro/* (Workers Static Assets)
+├── _headers             # Security and cache headers (Workers Static Assets)
 ├── .assetsignore        # Files never uploaded to Cloudflare
 ├── og-image.jpg         # Default 1200x630 social preview image
 ├── favicon*, icon-*.png, apple-touch-icon.png, site.webmanifest
@@ -66,7 +70,7 @@ npm run dev
 | --- | --- |
 | `npm run dev` | Start the Astro dev server |
 | `npm run check` | Type-check with `astro check` |
-| `npm run build` | Type-check, then build to `dist/` |
+| `npm run build` | Type-check, build to `dist/`, then generate the CSP |
 | `npm run preview` | Serve the built site locally |
 | `npm run deploy` | Build and deploy with Wrangler (normally CI does this) |
 
@@ -98,6 +102,20 @@ Drafts (`draft: true`) are excluded from the blog, RSS, and the sitemap. The ful
 - **About page bio, skills, and experience**: `src/pages/about.astro`
 - **Footer social links**: `src/components/layout/Footer.astro`
 - **Default social image**: replace `public/og-image.jpg` (1200x630)
+
+## Images
+
+Put images that posts or pages reference in `src/assets/images/` and link them with a relative path (`![Alt](../../assets/images/foo.png)`). Astro converts them to WebP with Sharp at build time. Files in `public/images/` are served as-is, so only put already-optimized images there.
+
+## Security headers
+
+`public/_headers` sets `X-Content-Type-Options`, `Referrer-Policy`, HSTS, `X-Frame-Options`, `Cross-Origin-Opener-Policy`, `Permissions-Policy`, and long-lived caching for `/_astro/*`. After `astro build`, `scripts/csp-headers.mjs` hashes every inline `<script>` in `dist/` and adds a `Content-Security-Policy` to the `/*` rule, so scripts never need `'unsafe-inline'`. Styles do allow `'unsafe-inline'`, because Shiki code blocks use `style=""` attributes.
+
+If you add a third-party script, font, iframe, or image host, add its origin to the directives in `scripts/csp-headers.mjs`. Otherwise the browser blocks it on the live site. `npm run dev` doesn't send these headers, so check the branch Preview URL.
+
+## Analytics
+
+Cloudflare Web Analytics is turned on for the `salcastoro.com` zone with automatic setup: Cloudflare injects the beacon into HTML at the edge, so there's no snippet in the repo. It only runs on `salcastoro.com`, not on previews or local dev. View it in the Cloudflare dashboard under **Web Analytics**.
 
 ## Styling notes
 
