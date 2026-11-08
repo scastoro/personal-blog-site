@@ -1,6 +1,7 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BlogLayout from '@/layouts/BlogLayout.astro';
+import { hasMarkdownVersion } from '@/utils/markdown';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => {
@@ -53,6 +54,7 @@ if (draft && import.meta.env.PROD) {
   ogImage={ogImage}
   ogImageAlt={ogImageAlt}
   draft={draft}
+  markdownPath={hasMarkdownVersion(post) ? `/blog/${post.id}.md` : undefined}
 >
   <Content />
 </BlogLayout>
