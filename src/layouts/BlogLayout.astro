@@ -16,6 +16,7 @@ export interface Props {
   ogImage?: string;
   ogImageAlt?: string;
   draft?: boolean;
+  noindex?: boolean;
   markdownPath?: string;
 }
 
@@ -31,6 +32,7 @@ const {
   ogImage,
   ogImageAlt,
   draft = false,
+  noindex = false,
   markdownPath,
 } = Astro.props;
 
@@ -70,7 +72,7 @@ const readingTime = Math.ceil((wordCount / 150) + (imageCount * 0.5)); // 150 WP
   modifiedTime={modifiedTime}
   author={author}
   tags={tags}
-  noindex={draft}
+  noindex={draft || noindex}
   markdownPath={markdownPath}
 >
   <!-- Add breadcrumb structured data -->

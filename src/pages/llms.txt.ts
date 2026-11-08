@@ -24,6 +24,7 @@ ${postLines.join('\n')}
 ## Optional
 
 - [Home](${absoluteURL('/index.md')}): Site overview and contact details
+- [Blog index](${absoluteURL('/blog.md')}): All posts with dates
 - [RSS feed](${absoluteURL('/rss.xml')}): Full-text blog feed
 - [GitHub](${SITE_CONFIG.social.github}): Open source projects
 - [Claude Code Subagents: From Basics to Advanced Workflows](https://www.youtube.com/watch?v=HI8PBSPr6Qk): Meetup talk on custom subagents

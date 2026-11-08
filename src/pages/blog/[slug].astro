@@ -33,7 +33,8 @@ const {
   heroImageAlt,
   ogImage,
   ogImageAlt,
-  draft
+  draft,
+  noindex
 } = post.data;
 
 // Don't render draft posts in production
@@ -54,6 +55,7 @@ if (draft && import.meta.env.PROD) {
   ogImage={ogImage}
   ogImageAlt={ogImageAlt}
   draft={draft}
+  noindex={noindex}
   markdownPath={hasMarkdownVersion(post) ? `/blog/${post.id}.md` : undefined}
 >
   <Content />
