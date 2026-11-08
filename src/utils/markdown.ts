@@ -25,7 +25,7 @@ export function markdownResponse(markdown: string): Response {
   });
 }
 
-/** Drafts and noindex posts stay out of the Markdown versions and llms.txt. */
+/** Drafts and noindex posts stay out of the Markdown listings and llms.txt. */
 export function hasMarkdownVersion(post: Post): boolean {
   return !post.data.draft && !post.data.noindex;
 }
@@ -38,6 +38,16 @@ export async function getMarkdownPosts(): Promise<Post[]> {
 
 export function postMarkdownURL(post: Post): string {
   return absoluteURL(`/blog/${post.id}.md`);
+}
+
+/** One list item per post, shared by the home and blog Markdown pages. */
+export function postListMarkdown(posts: Post[]): string {
+  return posts
+    .map((post) => {
+      const date = post.data.pubDate.toISOString().slice(0, 10);
+      return `- [${post.data.title}](${postMarkdownURL(post)}) (${date}): ${post.data.description}`;
+    })
+    .join('\n');
 }
 
 export function frontmatter(fields: Record<string, unknown>): string {
@@ -132,6 +142,14 @@ export async function normalizePostBody(post: Post): Promise<string> {
 
 export async function renderPostMarkdown(post: Post): Promise<string> {
   const { title, description, author, pubDate, updatedDate, tags } = post.data;
+
+  // The zone rewrite rule sends every post URL here, so noindex posts need a file
+  // too. It points to the HTML page instead of repeating the post.
+  if (!hasMarkdownVersion(post)) {
+    const url = absoluteURL(`/blog/${post.id}/`);
+    return `${frontmatter({ title, url, robots: 'noindex' })}\n\n# ${title}\n\nThis post isn't available in Markdown. Read it at ${url}\n`;
+  }
+
   const header = frontmatter({
     title,
     description,

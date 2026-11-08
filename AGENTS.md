@@ -4,7 +4,7 @@ Guidance for coding agents (Claude Code, Codex, and others) working in this repo
 
 ## What this is
 
-Sal Castoro's personal site and blog, https://salcastoro.com. It's a static Astro 7 site styled with Tailwind CSS 4 and served from a Cloudflare Worker with static assets. Pages: home, about, blog index, blog posts, 404, plus `/rss.xml`, `/sitemap-index.xml`, `/llms.txt`, and Markdown versions (`/index.md`, `/about.md`, `/blog/<slug>.md`).
+Sal Castoro's personal site and blog, https://salcastoro.com. It's a static Astro 7 site styled with Tailwind CSS 4 and served from a Cloudflare Worker with static assets. Pages: home, about, blog index, blog posts, 404, plus `/rss.xml`, `/sitemap-index.xml`, `/llms.txt`, and Markdown versions (`/index.md`, `/about.md`, `/blog.md`, `/blog/<slug>.md`).
 
 ## Commands
 
@@ -48,6 +48,8 @@ There is no lint, unit-test, or e2e setup. `npm run build` is the gate: it must 
 - Cloudflare Worker `personal-blog-site`, configured in `wrangler.jsonc` (assets from `./dist`, `404-page` not-found handling, custom domain `salcastoro.com`).
 - **Workers Builds** is connected to GitHub: pushes to `main` deploy to production (`npx wrangler deploy`); other branches create a Preview (`npx wrangler preview`) with a URL commented on the PR.
 - `www.salcastoro.com` 301-redirects to the apex using a zone Redirect Rule (not in this repo).
+- Zone URL Rewrite Rules (phase `http_request_transform`, not in this repo) serve the static `.md` file when a request's `Accept` header includes `text/markdown`, so these pages need no Worker compute. They cover `/`, `/about/`, `/blog/`, and `/blog/<slug>/`. New posts are covered automatically. A new top-level page needs its own `*.md.ts` endpoint, a `Vary: Accept` entry in `public/_headers`, and a new rule. Every post needs a `.md` file or Markdown requests return a 404, which is why noindex posts get a short stub.
+- The rules can't be tested on Preview URLs because they only apply on `salcastoro.com`. To change them with `cf`, read the entrypoint first because an update replaces every rule, and pass the payload with `--body` (`cf rulesets entrypoint update http_request_transform -z salcastoro.com --body ...`).
 - Use Wrangler for build and deploy here. The `cf` CLI can't build Astro 6 or later during its beta; `cf` is fine for account resources (DNS, zones).
 - Pushing to `main` publishes to the live site. Push to a branch first if you want a Preview.
 

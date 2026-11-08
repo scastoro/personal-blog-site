@@ -4,16 +4,11 @@ import {
   frontmatter,
   getMarkdownPosts,
   markdownResponse,
-  postMarkdownURL,
+  postListMarkdown,
 } from '@/utils/markdown';
 
 export async function GET() {
   const posts = await getMarkdownPosts();
-  const postLines = posts.map((post) => {
-    const date = post.data.pubDate.toISOString().slice(0, 10);
-    return `- [${post.data.title}](${postMarkdownURL(post)}) (${date}): ${post.data.description}`;
-  });
-
   return markdownResponse(`${frontmatter({
     title: SITE_CONFIG.name,
     description: SITE_CONFIG.description,
@@ -27,11 +22,12 @@ ${SITE_CONFIG.description}
 ## Pages
 
 - [About](${absoluteURL('/about.md')}): Background, skills, and work experience
+- [Blog](${absoluteURL('/blog.md')}): All blog posts
 - [RSS feed](${absoluteURL('/rss.xml')}): Full-text blog feed
 
 ## Blog posts
 
-${postLines.join('\n')}
+${postListMarkdown(posts)}
 
 ## Contact
 

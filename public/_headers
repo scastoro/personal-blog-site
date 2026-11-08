@@ -9,5 +9,25 @@
   Cross-Origin-Opener-Policy: same-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
 
+# Pages and their Markdown versions share URLs: a zone URL Rewrite Rule serves the
+# .md file when the request's Accept header includes text/markdown.
+/
+  Vary: Accept
+
+/about/
+  Vary: Accept
+
+/blog/*
+  Vary: Accept
+
+/index.md
+  Vary: Accept
+
+/about.md
+  Vary: Accept
+
+/blog.md
+  Vary: Accept
+
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
