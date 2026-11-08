@@ -29,19 +29,19 @@ export const skillGroups: SkillGroup[] = [
     name: 'Frontend',
     icon: ['M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'],
     tone: 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400',
-    skills: ['React', 'TypeScript', 'Next.js', 'Astro', 'Tailwind CSS', 'shadcn/ui', 'Angular', 'SwiftUI'],
+    skills: ['React', 'TypeScript', 'Next.js', 'Astro', 'Tailwind CSS', 'shadcn/ui', 'SwiftUI'],
   },
   {
     name: 'Backend & Data',
     icon: ['M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2'],
     tone: 'bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400',
-    skills: ['Node.js', 'Hono', 'Express', 'Fastify', 'Go', 'Python', '.NET Core', 'REST APIs', 'PostgreSQL', 'MSSQL', 'MongoDB'],
+    skills: ['Node.js', 'Hono', 'Express', 'Fastify', 'Go', 'Python', 'REST APIs', 'PostgreSQL', 'MongoDB'],
   },
   {
     name: 'Cloud & DevOps',
     icon: ['M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z'],
     tone: 'bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-400',
-    skills: ['AWS', 'Cloudflare Workers', 'Azure', 'GitHub Actions', 'Azure DevOps', 'Docker', 'CI/CD'],
+    skills: ['AWS', 'Cloudflare Workers', 'Azure', 'GitHub Actions', 'Docker', 'CI/CD'],
   },
   {
     name: 'AI & Developer Tools',
