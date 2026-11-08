@@ -9,8 +9,6 @@ featured: false
 twitterCard: 'summary_large_image'
 ---
 
-# Context Engineering in Claude Code: Custom Subagents as Specialized Helpers
-
 In Claude Code, the shift from prompt engineering toward context engineering + agent delegation becomes particularly meaningful via custom subagents. These subagents let you isolate responsibilities, reduce context pollution, and tailor tool access for each domain. This post zooms into how that works in the Claude Code world.
 
 ---

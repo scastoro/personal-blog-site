@@ -4,7 +4,7 @@ Guidance for coding agents (Claude Code, Codex, and others) working in this repo
 
 ## What this is
 
-Sal Castoro's personal site and blog, https://salcastoro.com. It's a static Astro 7 site styled with Tailwind CSS 4 and served from a Cloudflare Worker with static assets. Pages: home, about, blog index, blog posts, 404, plus `/rss.xml` and `/sitemap-index.xml`.
+Sal Castoro's personal site and blog, https://salcastoro.com. It's a static Astro 7 site styled with Tailwind CSS 4 and served from a Cloudflare Worker with static assets. Pages: home, about, blog index, blog posts, 404, plus `/rss.xml`, `/sitemap-index.xml`, `/llms.txt`, and Markdown versions (`/index.md`, `/about.md`, `/blog/<slug>.md`).
 
 ## Commands
 
@@ -23,12 +23,14 @@ There is no lint, unit-test, or e2e setup. `npm run build` is the gate: it must 
 
 ## Layout
 
-- `src/pages/`: routes. `about.astro` holds the bio, skill groups, and work-experience data inline; `rss.xml.ts` builds the feed.
+- `src/pages/`: routes. `rss.xml.ts` builds the full-text feed; `llms.txt.ts` and the `*.md.ts` endpoints build the agent-facing files.
+- `src/data/profile.ts`: bio, skill groups, and work history, used by the about page and `/about.md`.
+- `src/utils/markdown.ts`: turns posts into Markdown with absolute URLs. MDX posts fail the build until their components are handled there.
 - `src/layouts/BaseLayout.astro`: `<head>`, SEO/Open Graph/Twitter tags, JSON-LD, and the theme bootstrap script. `PageLayout` wraps it with header/footer; `BlogLayout` adds post chrome.
 - `src/utils/seo.ts`: `SITE_CONFIG`, the single source for site name, description, contact email (`sal@salcastoro.com`), social links, and the default OG image, plus JSON-LD helpers.
 - `src/content.config.ts`: blog collection schema. Posts live in `src/content/blog/*.md(x)`; the filename is the URL slug.
 - `src/components/mdx/`: components available to `.mdx` posts (current posts are plain `.md`).
-- `public/`: static files copied verbatim, including `_headers`, `.assetsignore`, `og-image.jpg`, and the icons.
+- `public/`: static files copied verbatim, including `robots.txt` (with the `ai-train=no` Content-Signal), `_headers`, `.assetsignore`, `og-image.jpg`, and the icons.
 
 ## Conventions
 

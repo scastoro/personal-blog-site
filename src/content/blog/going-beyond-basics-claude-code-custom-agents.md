@@ -39,14 +39,14 @@ Once you've mastered setup, you can start pushing agents further.
 
 You can run several agents at once, each on a discrete part of a problem.
 
-![Same subagents demo](../../assets/images/same_subagents_10s.gif)
+![Claude Code terminal showing three astro-developer subagents running at once: implementing the Home page, building the Blog pages, and creating the About page.](../../assets/images/same_subagents_10s.gif)
 
 In this image, the astro-developer subagent was able to create several web pages at once.
 Because the work doesn't overlap, results return faster without the subagents stepping on each other.
 
 Here's an example of **multiple sub-agents running in parallel**:
 
-![Different subagents in action](../../assets/images/different_subagents_long_7s.gif)
+![Claude Code terminal showing an accessibility-auditor subagent and a performance-validator subagent running in parallel, each working through its own audit.](../../assets/images/different_subagents_long_7s.gif)
 
 ---
 
@@ -54,7 +54,7 @@ Here's an example of **multiple sub-agents running in parallel**:
 
 Some tasks need sequential execution. A debugging agent might identify causes, then hand off to a testing agent, then finally to a builder agent for patching. You can define these workflows in your `CLAUDE.md`, in each agent's description, or with an orchestration agent.
 
-![Serial execution plan](../../assets/images/serial_execution_plan.png)
+![A three-phase agent plan. Phase 1, planning: ui-designer, design-system-architect, and seo-optimizer. Phase 2, implementation: astro-developer. Phase 3, enhancement and quality: accessibility-auditor, performance-validator, and documentation-writer.](../../assets/images/serial_execution_plan.png)
 
 ---
 
@@ -75,7 +75,7 @@ Agents can specialize in:
 
 Here's an example of a code reviewer subagent in action:
 
-![Code reviewer subagent report](../../assets/images/code_reviewer_subagent_report.png)
+![Claude Code output from a code-reviewer subagent reviewing an ESM-only migration in 20 tool uses, 25.5k tokens, and about two minutes. It reports no critical issues, 2 warnings, and 3 suggestions, then lists must-fix items, architecture strengths, and security notes.](../../assets/images/code_reviewer_subagent_report.png)
 
 ---
 
@@ -86,7 +86,7 @@ As powerful as custom agents are, they aren't free from trade-offs.
 - **Token Costs:**
   Each agent consumes tokens for its context and replies. In a complex workflow with 6–8 agents, that adds up fast. Be intentional—don't spin up agents you don't need.
 
-![Context usage monitoring](../../assets/images/context_usage.png)
+![Claude Code /context output showing 30k of 200k tokens used (15%): system prompt 3.2k, system tools 12.3k, MCP tools 12.1k, custom agents 562, memory files 2.3k, messages 8, and 169.5k free.](../../assets/images/context_usage.png)
 
 - **Context Pollution:**
   Overloading an agent with too much irrelevant data leads to hallucinations. Keep prompts short, scope narrow, and context lean.
@@ -106,7 +106,7 @@ As powerful as custom agents are, they aren't free from trade-offs.
 
 Here's a snapshot of custom agents from a real project:
 
-![Claude Code Custom Agents Screenshot](../../assets/images/claude-custom-agents.png)
+![Claude Code /agents list showing nine custom agents and their token costs, from 37 tokens for ui-designer to 222 tokens for code-reviewer.](../../assets/images/claude-custom-agents.png)
 
 - `code-reviewer (User)` – 222 tokens
 - `documentation-writer (Project)` – 39 tokens

@@ -35,6 +35,7 @@ export interface SEOProps {
   tags?: string[];
   noindex?: boolean;
   nofollow?: boolean;
+  markdownPath?: string;
 }
 
 /**
@@ -168,12 +169,12 @@ export function generateBlogPostSchema(
     dateModified: modifiedTime || publishedTime,
     author: {
       '@type': 'Person',
-      '@id': `${SITE_CONFIG.url}#person`,
+      '@id': `${SITE_CONFIG.url}/#person`,
       name: author || SITE_CONFIG.author.name,
     },
     publisher: {
       '@type': 'Person',
-      '@id': `${SITE_CONFIG.url}#person`,
+      '@id': `${SITE_CONFIG.url}/#person`,
       name: SITE_CONFIG.author.name,
     },
     mainEntityOfPage: {

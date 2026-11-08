@@ -16,6 +16,7 @@ export interface Props {
   ogImage?: string;
   ogImageAlt?: string;
   draft?: boolean;
+  markdownPath?: string;
 }
 
 const {
@@ -30,12 +31,13 @@ const {
   ogImage,
   ogImageAlt,
   draft = false,
+  markdownPath,
 } = Astro.props;
 
 // Generate breadcrumbs for blog posts
 const breadcrumbs = [
   { name: 'Home', url: Astro.site?.toString() || SITE_CONFIG.url },
-  { name: 'Blog', url: new URL('/blog', Astro.site || SITE_CONFIG.url).toString() },
+  { name: 'Blog', url: new URL('/blog/', Astro.site || SITE_CONFIG.url).toString() },
   { name: title, url: new URL(Astro.url.pathname, Astro.site || SITE_CONFIG.url).toString() },
 ];
 
@@ -69,6 +71,7 @@ const readingTime = Math.ceil((wordCount / 150) + (imageCount * 0.5)); // 150 WP
   author={author}
   tags={tags}
   noindex={draft}
+  markdownPath={markdownPath}
 >
   <!-- Add breadcrumb structured data -->
   <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
@@ -84,7 +87,7 @@ const readingTime = Math.ceil((wordCount / 150) + (imageCount * 0.5)); // 150 WP
           <ol class="flex space-x-2 text-sm text-gray-600 dark:text-gray-400">
             <li><a href="/" class="hover:text-gray-900 dark:hover:text-gray-200">Home</a></li>
             <li class="before:content-['/'] before:mx-2">
-              <a href="/blog" class="hover:text-gray-900 dark:hover:text-gray-200">Blog</a>
+              <a href="/blog/" class="hover:text-gray-900 dark:hover:text-gray-200">Blog</a>
             </li>
             <li class="before:content-['/'] before:mx-2 text-gray-900 dark:text-gray-300 font-medium" aria-current="page">
               {title}
@@ -223,7 +226,7 @@ const readingTime = Math.ceil((wordCount / 150) + (imageCount * 0.5)); // 150 WP
           <!-- Back to Blog -->
           <div class="text-center">
             <a 
-              href="/blog"
+              href="/blog/"
               class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
             >
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
